@@ -33,7 +33,6 @@ export function Header() {
           className="flex items-center gap-2 text-[var(--color-text)] font-semibold text-sm tracking-tight hover:opacity-80 transition-opacity"
           aria-label="Ollama Explorer — home"
         >
-          <span className="text-base">⬡</span>
           <span>Ollama Explorer</span>
         </Link>
 

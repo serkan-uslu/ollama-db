@@ -5,6 +5,7 @@ export {
   getTotalCount,
   getTopModel,
   getSmallestModel,
+  getModelOfTheDay,
   filterAndSortModels,
   sortModels,
   getRelatedModels,

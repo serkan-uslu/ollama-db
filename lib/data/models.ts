@@ -46,6 +46,16 @@ export function getSmallestModel(): Model {
   return [...rawData].sort((a, b) => (a.min_ram_gb ?? 999) - (b.min_ram_gb ?? 999))[0];
 }
 
+export function getModelOfTheDay(): Model {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now.getTime() - start.getTime()) / 86_400_000);
+  const candidates = rawData
+    .filter((m) => m.domain !== 'Embedding' && (m.pulls ?? 0) > 500_000)
+    .sort((a, b) => a.id.localeCompare(b.id)); // stable order
+  return candidates[dayOfYear % candidates.length];
+}
+
 export function filterAndSortModels(filters: ActiveFilters): Model[] {
   let results = [...rawData];
 

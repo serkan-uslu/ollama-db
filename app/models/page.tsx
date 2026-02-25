@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { getAllModels } from '@/lib/data/models';
 import { deriveFilterOptions } from '@/lib/data/filters';
@@ -33,7 +34,9 @@ export default function ModelsPage() {
           </p>
         </div>
       </div>
-      <ModelsBrowser allModels={models} filterOptions={filterOptions} />
+      <Suspense>
+        <ModelsBrowser allModels={models} filterOptions={filterOptions} />
+      </Suspense>
     </div>
   );
 }

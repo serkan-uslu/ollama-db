@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { StatCard } from '@/components/ui/molecules/StatCard';
 import { Button } from '@/components/ui/atoms/Button';
 import { JsonLd } from '@/components/ui/atoms/JsonLd';
-import { getAllModels, getTopModel, getSmallestModel } from '@/lib/data/models';
+import { getAllModels, getTopModel, getSmallestModel, getModelOfTheDay } from '@/lib/data/models';
 import { formatPulls, formatRam } from '@/lib/utils/format';
 import { deriveFilterOptions } from '@/lib/data/filters';
+import { ModelOfTheDay } from '@/components/features/models/ModelOfTheDay';
+import { UseCaseShowcase } from '@/components/features/models/UseCaseShowcase';
 
 export const dynamic = 'force-static';
 
@@ -28,6 +30,7 @@ export default function HomePage() {
   const models = getAllModels();
   const topModel = getTopModel();
   const smallestModel = getSmallestModel();
+  const modelOfTheDay = getModelOfTheDay();
   const options = deriveFilterOptions(models);
 
   const websiteSchema = {
@@ -113,6 +116,12 @@ export default function HomePage() {
           />
         </div>
       </section>
+
+      {/* Model of the Day */}
+      {modelOfTheDay && <ModelOfTheDay model={modelOfTheDay} />}
+
+      {/* Use Case Showcase */}
+      <UseCaseShowcase />
     </main>
   );
 }

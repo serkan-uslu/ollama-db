@@ -3,8 +3,10 @@
 import { useMemo } from 'react';
 import { ModelFilters } from './ModelFilters';
 import { ModelGrid } from './ModelGrid';
+import { ActiveFilters } from './ActiveFilters';
 import { SearchInput } from '@/components/ui/molecules';
 import { BrowseLayout } from '@/components/templates';
+import { ScrollToTop } from '@/components/ui/atoms';
 import { useFilters, useDebounce } from '@/lib/hooks';
 import { filterAndSortModels } from '@/lib/data';
 import type { Model } from '@/lib/types';
@@ -24,29 +26,33 @@ export function ModelsBrowser({ allModels, filterOptions }: ModelsBrowserProps) 
   }, [hook.filters, debouncedSearch, allModels]); // allModels is stable (server prop)
 
   return (
-    <BrowseLayout
-      search={
-        <SearchInput
-          value={hook.filters.search}
-          onChange={hook.setSearch}
-          className="w-full max-w-xl"
-        />
-      }
-      sidebar={
-        <ModelFilters
-          options={filterOptions}
-          hook={hook}
-          totalResults={results.length}
-          totalModels={allModels.length}
-        />
-      }
-      count={
-        <p className="text-sm text-[var(--color-text-muted)]">
-          Showing <span className="font-medium text-[var(--color-text)]">{results.length}</span> of{' '}
-          {allModels.length} models
-        </p>
-      }
-      results={<ModelGrid models={results} />}
-    />
+    <>
+      <BrowseLayout
+        search={
+          <SearchInput
+            value={hook.filters.search}
+            onChange={hook.setSearch}
+            className="w-full max-w-xl"
+          />
+        }
+        sidebar={
+          <ModelFilters
+            options={filterOptions}
+            hook={hook}
+            totalResults={results.length}
+            totalModels={allModels.length}
+          />
+        }
+        chips={<ActiveFilters hook={hook} options={filterOptions} />}
+        count={
+          <p className="text-sm text-[var(--color-text-muted)]">
+            Showing <span className="font-medium text-[var(--color-text)]">{results.length}</span>{' '}
+            of {allModels.length} models
+          </p>
+        }
+        results={<ModelGrid models={results} />}
+      />
+      <ScrollToTop />
+    </>
   );
 }

@@ -46,29 +46,10 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
     toggleLanguage,
     setRamBucket,
     setParamSizeBucket,
-    setSort,
   } = hook;
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Sort */}
-      <Section title="Sort by">
-        <select
-          value={filters.sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="w-full h-9 px-3 text-sm rounded-[var(--radius-md)] bg-[var(--color-bg)] text-[var(--color-text)] border border-[var(--color-border)] focus:border-[var(--color-border-strong)] outline-none cursor-pointer"
-          aria-label="Sort models"
-        >
-          {SORT_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
-        </select>
-      </Section>
-
-      <Divider />
-
       {/* Capabilities */}
       <Section title="Capability">
         <div className="flex flex-wrap gap-1.5">
@@ -190,7 +171,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
 
 export function ModelFilters({ options, hook, totalResults, totalModels }: ModelFiltersProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { activeCount, reset } = hook;
+  const { filters, activeCount, reset, setSort } = hook;
 
   return (
     <>
@@ -255,9 +236,9 @@ export function ModelFilters({ options, hook, totalResults, totalModels }: Model
         </div>
       )}
 
-      {/* ── Desktop: sidebar ── */}
+      {/* ── Desktop: sticky sidebar ── */}
       <aside
-        className={cn('hidden lg:flex flex-col gap-5 w-64 xl:w-72 shrink-0')}
+        className="hidden lg:flex flex-col gap-5 w-64 xl:w-72 shrink-0 sticky top-[calc(3.5rem+1.5rem)]"
         aria-label="Filter sidebar"
       >
         <div className="flex items-center justify-between">
@@ -270,6 +251,26 @@ export function ModelFilters({ options, hook, totalResults, totalModels }: Model
             </Button>
           )}
         </div>
+
+        {/* Sort */}
+        <div className="flex flex-col gap-2.5">
+          <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide">
+            Sort by
+          </p>
+          <select
+            value={filters.sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="w-full h-9 px-3 text-sm rounded-[var(--radius-md)] bg-[var(--color-bg)] text-[var(--color-text)] border border-[var(--color-border)] focus:border-[var(--color-border-strong)] outline-none cursor-pointer"
+            aria-label="Sort models"
+          >
+            {SORT_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <FilterContent options={options} hook={hook} />
       </aside>
     </>

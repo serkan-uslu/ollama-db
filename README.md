@@ -1,4 +1,8 @@
-# ⬡ Ollama Explorer
+# Ollama Explorer
+
+<p align="center">
+  <img src="public/olli.jpg" alt="Olli — Ollama Explorer mascot" width="200" style="border-radius: 24px;" />
+</p>
 
 A fast, minimal directory for browsing **214 open-source AI models** available via [Ollama](https://ollama.com). Built with Next.js App Router, React 19 and Tailwind CSS v4.
 

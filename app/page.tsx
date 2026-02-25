@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { StatCard } from '@/components/ui/molecules/StatCard';
 import { Button } from '@/components/ui/atoms/Button';
@@ -49,26 +50,39 @@ export default function HomePage() {
     <main id="main" className="flex-1 flex flex-col">
       <JsonLd data={websiteSchema} />
       {/* Hero */}
-      <section className="flex-1 flex flex-col items-center justify-center px-4 py-20 sm:py-28 text-center">
-        <p className="text-5xl sm:text-6xl mb-6 select-none" aria-hidden>
-          ⬡
-        </p>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[var(--color-text)] max-w-xl leading-tight">
-          Browse open-source AI models
-        </h1>
-        <p className="mt-4 text-base sm:text-lg text-[var(--color-text-muted)] max-w-md leading-relaxed">
-          Search, filter and discover {models.length}+ models available on Ollama by capability,
-          domain, size and more.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-3">
-          <Link href="/models">
-            <Button size="lg">Explore Models</Button>
-          </Link>
-          <Link href="/about">
-            <Button variant="outline" size="lg">
-              About this project
-            </Button>
-          </Link>
+      <section className="flex-1 flex items-center px-6 sm:px-10 lg:px-20 py-16 sm:py-24">
+        <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-16">
+          {/* Image */}
+          <div className="shrink-0">
+            <Image
+              src="/olli.jpg"
+              alt="Olli — the Ollama Explorer mascot"
+              width={320}
+              height={320}
+              className="rounded-3xl shadow-xl select-none"
+              priority
+            />
+          </div>
+          {/* Text */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[var(--color-text)] leading-tight">
+              Browse open-source AI models
+            </h1>
+            <p className="mt-4 text-base sm:text-lg text-[var(--color-text-muted)] max-w-md leading-relaxed">
+              Search, filter and discover {models.length}+ models available on Ollama by capability,
+              domain, size and more.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <Link href="/models">
+                <Button size="lg">Explore Models</Button>
+              </Link>
+              <Link href="/about">
+                <Button variant="outline" size="lg">
+                  About this project
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 

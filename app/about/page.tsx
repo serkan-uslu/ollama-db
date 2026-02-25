@@ -34,7 +34,6 @@ export default function AboutPage() {
   return (
     <main id="main" className="max-w-2xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col gap-10">
       <div className="flex flex-col gap-3">
-        <p className="text-4xl select-none">⬡</p>
         <h1 className="text-2xl sm:text-3xl font-semibold text-[var(--color-text)] tracking-tight">
           About Ollama Explorer
         </h1>

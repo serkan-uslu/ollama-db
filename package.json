@@ -11,6 +11,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@vercel/analytics": "^1.6.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
@@ -34,7 +35,12 @@
     "typescript": "^5"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["prettier --write", "eslint --fix"],
-    "*.{css,json,md}": ["prettier --write"]
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{css,json,md}": [
+      "prettier --write"
+    ]
   }
 }

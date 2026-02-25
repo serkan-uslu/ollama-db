@@ -11,7 +11,7 @@ A fast, minimal directory for browsing **214 open-source AI models** available v
 
 > Ollama lets you run LLMs locally with a single command — but its library lists 200+ models with minimal filtering. Finding the right one for your hardware, use case, or language requires jumping between model pages and reading through descriptions manually.
 >
-> **Ollama Explorer solves this.** Every model is enriched with structured metadata — capability tags, domain classification, RAM requirements, context window sizes, parameter size buckets and language support. Filter across all dimensions at once, search semantically (typos included), and get to the right model in seconds.
+> **Ollama Explorer solves this.** Every model is enriched with structured metadata — capability tags, domain classification, RAM requirements, context window sizes, parameter size buckets and language support. Filter across all dimensions at once, use fuzzy search with typo tolerance, and get to the right model in seconds.
 
 🌐 **Live** → [ollama-explorer.vercel.app](https://ollama-explorer.vercel.app)  
 📦 **Source** → [github.com/serkan-uslu/ollama-explorer](https://github.com/serkan-uslu/ollama-explorer)

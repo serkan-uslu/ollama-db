@@ -60,7 +60,8 @@ export default function AboutPage() {
           Ollama Explorer solves this. Every model is enriched with structured metadata: capability
           tags, domain classification, RAM requirements, context window sizes, parameter size
           buckets, and language support. You can filter across all of these dimensions at once,
-          search semantically (typos included), and get to the right model in seconds — not minutes.
+          search with fuzzy matching (tolerates typos), and get to the right model in seconds — not
+          minutes.
         </p>
         <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
           Whether you’re a developer picking a coding assistant, a researcher comparing reasoning
@@ -118,7 +119,7 @@ export default function AboutPage() {
             { name: 'React 19', desc: 'Server Components + client interactivity' },
             { name: 'TypeScript 5', desc: 'Strict mode, zero errors' },
             { name: 'Tailwind CSS v4', desc: 'CSS-native design tokens, no config file' },
-            { name: 'Fuse.js', desc: 'Fuzzy / semantic search with field weights' },
+            { name: 'Fuse.js', desc: 'Fuzzy search with field weights and typo tolerance' },
             { name: 'Lucide Icons', desc: 'Consistent icon system' },
             { name: 'Atomic Design', desc: 'atoms → molecules → templates → pages' },
             { name: 'Geist Font', desc: 'Geist Sans + Geist Mono via next/font' },

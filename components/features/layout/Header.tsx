@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Github } from 'lucide-react';
 import { useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { Divider } from '@/components/ui/atoms/Divider';
@@ -56,6 +56,15 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-1">
+          <a
+            href="https://github.com/serkan-uslu/ollama-explorer"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View source on GitHub"
+            className="flex items-center justify-center min-h-[44px] min-w-[44px] rounded-[var(--radius-md)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)] transition-colors"
+          >
+            <Github size={18} />
+          </a>
           <ThemeToggle />
           {/* Hamburger — mobile only */}
           <button

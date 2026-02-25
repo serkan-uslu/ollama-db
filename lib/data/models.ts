@@ -1,8 +1,26 @@
+import Fuse from 'fuse.js';
 import type { Model, SortOption } from '@/lib/types/model';
 import type { ActiveFilters } from '@/lib/types/filter';
 import modelsJson from '@/public/models.json';
 
 const rawData = modelsJson as Model[];
+
+// Singleton Fuse index — built once at module load time
+const fuse = new Fuse(rawData, {
+  keys: [
+    { name: 'model_name', weight: 4 },
+    { name: 'description', weight: 2 },
+    { name: 'use_cases', weight: 2 },
+    { name: 'best_for', weight: 1.5 },
+    { name: 'domain', weight: 1 },
+    { name: 'capabilities', weight: 0.5 },
+  ],
+  threshold: 0.35,
+  minMatchCharLength: 2,
+  includeScore: true,
+  shouldSort: true,
+  ignoreLocation: true,
+});
 
 export function getAllModels(): Model[] {
   return rawData;
@@ -32,15 +50,8 @@ export function filterAndSortModels(filters: ActiveFilters): Model[] {
   let results = [...rawData];
 
   if (filters.search.trim()) {
-    const q = filters.search.toLowerCase();
-    results = results.filter(
-      (m) =>
-        m.model_name.toLowerCase().includes(q) ||
-        (m.description?.toLowerCase().includes(q) ?? false) ||
-        m.use_cases.some((u) => u.toLowerCase().includes(q)) ||
-        (m.best_for?.toLowerCase().includes(q) ?? false) ||
-        (m.domain?.toLowerCase().includes(q) ?? false),
-    );
+    const fuseResults = fuse.search(filters.search.trim());
+    results = fuseResults.map((r) => r.item);
   }
 
   if (filters.capabilities.length > 0) {

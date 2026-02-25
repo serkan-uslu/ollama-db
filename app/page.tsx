@@ -66,11 +66,13 @@ export default function HomePage() {
           {/* Text */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[var(--color-text)] leading-tight">
-              Browse open-source AI models
+              Find the right AI model,
+              <br />
+              <span className="text-[var(--color-text-muted)]">without the guesswork.</span>
             </h1>
             <p className="mt-4 text-base sm:text-lg text-[var(--color-text-muted)] max-w-md leading-relaxed">
-              Search, filter and discover {models.length}+ models available on Ollama by capability,
-              domain, size and more.
+              Ollama has {models.length}+ open-source models — but discovering which one fits your
+              use case, hardware, or language is hard. Ollama Explorer makes it easy.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Link href="/models">

@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { getAllModels } from '@/lib/data/models';
 import { deriveFilterOptions } from '@/lib/data/filters';
 import { Divider } from '@/components/ui/atoms/Divider';
-import { Badge } from '@/components/ui/atoms/Badge';
 import { Button } from '@/components/ui/atoms/Button';
 import { formatDate } from '@/lib/utils/format';
 
@@ -38,7 +37,13 @@ export default function AboutPage() {
           About Ollama Explorer
         </h1>
         <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
-          A minimal, fast directory for browsing open-source AI models available via{' '}
+          Open-source AI has never been more accessible — but that accessibility comes with a new
+          problem:{' '}
+          <strong className="text-[var(--color-text)]">
+            too many choices, too little structure.
+          </strong>
+        </p>
+        <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
           <a
             href="https://ollama.com"
             target="_blank"
@@ -46,8 +51,21 @@ export default function AboutPage() {
             className="underline underline-offset-2 hover:text-[var(--color-text)] transition-colors"
           >
             Ollama
-          </a>
-          . Search by name, filter by capability, domain, RAM requirement, parameter size and more.
+          </a>{' '}
+          lets you run large language models locally with a single command — but its library lists
+          200+ models with minimal filtering. Figuring out which model fits your hardware, use case,
+          or language takes time you shouldn’t have to spend.
+        </p>
+        <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
+          Ollama Explorer solves this. Every model is enriched with structured metadata: capability
+          tags, domain classification, RAM requirements, context window sizes, parameter size
+          buckets, and language support. You can filter across all of these dimensions at once,
+          search semantically (typos included), and get to the right model in seconds — not minutes.
+        </p>
+        <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
+          Whether you’re a developer picking a coding assistant, a researcher comparing reasoning
+          models, or someone running AI on a laptop with 8 GB of RAM — Ollama Explorer gets you to
+          the right starting point faster.
         </p>
       </div>
 
@@ -92,16 +110,27 @@ export default function AboutPage() {
       <Divider />
 
       {/* Tech stack */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
         <h2 className="text-base font-semibold text-[var(--color-text)]">Tech stack</h2>
-        <div className="flex flex-wrap gap-2">
-          {['Next.js 16', 'React 19', 'TypeScript 5', 'Tailwind CSS v4', 'Lucide Icons'].map(
-            (t) => (
-              <Badge key={t} variant="outline" size="md">
-                {t}
-              </Badge>
-            ),
-          )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {[
+            { name: 'Next.js 16', desc: 'App Router, force-static, generateStaticParams' },
+            { name: 'React 19', desc: 'Server Components + client interactivity' },
+            { name: 'TypeScript 5', desc: 'Strict mode, zero errors' },
+            { name: 'Tailwind CSS v4', desc: 'CSS-native design tokens, no config file' },
+            { name: 'Fuse.js', desc: 'Fuzzy / semantic search with field weights' },
+            { name: 'Lucide Icons', desc: 'Consistent icon system' },
+            { name: 'Atomic Design', desc: 'atoms → molecules → templates → pages' },
+            { name: 'Geist Font', desc: 'Geist Sans + Geist Mono via next/font' },
+          ].map((t) => (
+            <div
+              key={t.name}
+              className="flex flex-col gap-0.5 px-4 py-3 rounded-[var(--radius-md)] bg-[var(--color-bg-subtle)] border border-[var(--color-border)]"
+            >
+              <span className="text-sm font-medium text-[var(--color-text)]">{t.name}</span>
+              <span className="text-xs text-[var(--color-text-subtle)]">{t.desc}</span>
+            </div>
+          ))}
         </div>
       </div>
 

@@ -29,7 +29,7 @@ export function SearchInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="pl-9 pr-9"
+        className="pl-9 pr-9 [&::-webkit-search-cancel-button]:hidden"
         aria-label="Search models"
       />
       {value && (

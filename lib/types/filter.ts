@@ -12,6 +12,12 @@ export interface RamBucket {
   max: number;
 }
 
+export interface ContextWindowBucket {
+  label: string;
+  min: number;
+  max: number;
+}
+
 export interface FilterOptions {
   capabilities: Capability[];
   domains: Domain[];
@@ -20,6 +26,7 @@ export interface FilterOptions {
   languages: string[];
   paramSizeBuckets: ParamSizeBucket[];
   ramBuckets: RamBucket[];
+  contextWindowBuckets: ContextWindowBucket[];
 }
 
 export interface ActiveFilters {
@@ -31,5 +38,6 @@ export interface ActiveFilters {
   languages: string[];
   paramSizeBucket: string | null;
   ramBucket: string | null;
+  contextWindowBucket: string | null;
   sort: string;
 }

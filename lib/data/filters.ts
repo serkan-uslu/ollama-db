@@ -1,5 +1,10 @@
 import type { Capability, Complexity, Domain, Model } from '@/lib/types/model';
-import type { FilterOptions, ParamSizeBucket, RamBucket } from '@/lib/types/filter';
+import type {
+  FilterOptions,
+  ParamSizeBucket,
+  RamBucket,
+  ContextWindowBucket,
+} from '@/lib/types/filter';
 
 function unique<T>(arr: T[]): T[] {
   return [...new Set(arr)];
@@ -25,6 +30,16 @@ function deriveRamBuckets(_models: Model[]): RamBucket[] {
   ];
 }
 
+function deriveContextWindowBuckets(_models: Model[]): ContextWindowBucket[] {
+  return [
+    { label: '≤ 8K', min: 0, max: 8_001 },
+    { label: '8K – 32K', min: 8_001, max: 32_001 },
+    { label: '32K – 128K', min: 32_001, max: 128_001 },
+    { label: '128K – 1M', min: 128_001, max: 1_000_001 },
+    { label: '1M+', min: 1_000_001, max: Infinity },
+  ];
+}
+
 export function deriveFilterOptions(models: Model[]): FilterOptions {
   return {
     capabilities: unique(models.flatMap((m) => m.capabilities)).sort() as Capability[],
@@ -34,5 +49,6 @@ export function deriveFilterOptions(models: Model[]): FilterOptions {
     languages: unique(models.flatMap((m) => m.ai_languages).filter(Boolean)).sort(),
     paramSizeBuckets: deriveParamSizeBuckets(models),
     ramBuckets: deriveRamBuckets(models),
+    contextWindowBuckets: deriveContextWindowBuckets(models),
   };
 }

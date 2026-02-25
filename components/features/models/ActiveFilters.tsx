@@ -28,6 +28,7 @@ export function ActiveFilters({ hook, options }: ActiveFiltersProps) {
     toggleLanguage,
     setRamBucket,
     setParamSizeBucket,
+    setContextWindowBucket,
     reset,
   } = hook;
 
@@ -90,6 +91,17 @@ export function ActiveFilters({ hook, options }: ActiveFiltersProps) {
       key: 'ram',
       label: `RAM: ${bucket?.label ?? filters.ramBucket}`,
       onRemove: () => setRamBucket(null),
+    });
+  }
+
+  if (filters.contextWindowBucket) {
+    const bucket = options.contextWindowBuckets.find(
+      (b) => `${b.min}-${b.max}` === filters.contextWindowBucket,
+    );
+    chips.push({
+      key: 'ctx',
+      label: `Ctx: ${bucket?.label ?? filters.contextWindowBucket}`,
+      onRemove: () => setContextWindowBucket(null),
     });
   }
 

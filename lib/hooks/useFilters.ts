@@ -14,6 +14,7 @@ const INITIAL: ActiveFilters = {
   languages: [],
   paramSizeBucket: null,
   ramBucket: null,
+  contextWindowBucket: null,
   sort: DEFAULT_SORT,
 };
 
@@ -83,6 +84,13 @@ export function useFilters() {
     }));
   }, []);
 
+  const setContextWindowBucket = useCallback((bucket: string | null) => {
+    setFilters((prev) => ({
+      ...prev,
+      contextWindowBucket: prev.contextWindowBucket === bucket ? null : bucket,
+    }));
+  }, []);
+
   const setSort = useCallback((sort: string) => {
     setFilters((prev) => ({ ...prev, sort }));
   }, []);
@@ -97,7 +105,8 @@ export function useFilters() {
       filters.complexities.length +
       filters.languages.length +
       (filters.paramSizeBucket ? 1 : 0) +
-      (filters.ramBucket ? 1 : 0)
+      (filters.ramBucket ? 1 : 0) +
+      (filters.contextWindowBucket ? 1 : 0)
     );
   }, [filters]);
 
@@ -112,6 +121,7 @@ export function useFilters() {
     toggleLanguage,
     setRamBucket,
     setParamSizeBucket,
+    setContextWindowBucket,
     setSort,
     reset,
   };

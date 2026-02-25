@@ -36,10 +36,10 @@ export function filterAndSortModels(filters: ActiveFilters): Model[] {
     results = results.filter(
       (m) =>
         m.model_name.toLowerCase().includes(q) ||
-        m.description.toLowerCase().includes(q) ||
+        (m.description?.toLowerCase().includes(q) ?? false) ||
         m.use_cases.some((u) => u.toLowerCase().includes(q)) ||
-        m.best_for.toLowerCase().includes(q) ||
-        m.domain.toLowerCase().includes(q),
+        (m.best_for?.toLowerCase().includes(q) ?? false) ||
+        (m.domain?.toLowerCase().includes(q) ?? false),
     );
   }
 
@@ -87,8 +87,34 @@ export function filterAndSortModels(filters: ActiveFilters): Model[] {
     });
   }
 
+  if (filters.contextWindowBucket) {
+    const [min, max] = filters.contextWindowBucket.split('-').map(Number);
+    results = results.filter((m) => {
+      const ctx = Math.max(...(m.memory_requirements ?? []).map((r) => r.context_window ?? 0), 0);
+      if (ctx === 0) return false;
+      if (isNaN(max)) return ctx >= min;
+      return ctx >= min && ctx < max;
+    });
+  }
+
   results = sortModels(results, filters.sort as SortOption);
   return results;
+}
+
+export function getRelatedModels(model: Model, limit = 4): Model[] {
+  const sameDomain = rawData
+    .filter((m) => m.id !== model.id && m.domain === model.domain)
+    .sort((a, b) => (b.pulls ?? 0) - (a.pulls ?? 0));
+
+  if (sameDomain.length >= limit) return sameDomain.slice(0, limit);
+
+  // Fallback: same capabilities
+  const capSet = new Set(model.capabilities);
+  const byCap = rawData.filter(
+    (m) => m.id !== model.id && m.capabilities.some((c) => capSet.has(c)),
+  );
+  const merged = [...new Map([...sameDomain, ...byCap].map((m) => [m.id, m])).values()];
+  return merged.sort((a, b) => (b.pulls ?? 0) - (a.pulls ?? 0)).slice(0, limit);
 }
 
 export function sortModels(models: Model[], sort: SortOption): Model[] {

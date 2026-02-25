@@ -18,7 +18,7 @@ export function SearchInput({
   className,
 }: SearchInputProps) {
   return (
-    <div className={cn('relative flex items-center', className)}>
+    <div className={cn('relative flex items-center w-full', className)}>
       <Search
         size={16}
         className="absolute left-3 pointer-events-none text-[var(--color-text-subtle)]"

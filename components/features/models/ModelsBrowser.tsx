@@ -29,11 +29,7 @@ export function ModelsBrowser({ allModels, filterOptions }: ModelsBrowserProps) 
     <>
       <BrowseLayout
         search={
-          <SearchInput
-            value={hook.filters.search}
-            onChange={hook.setSearch}
-            className="w-full max-w-xl"
-          />
+          <SearchInput value={hook.filters.search} onChange={hook.setSearch} className="w-full" />
         }
         sidebar={
           <ModelFilters

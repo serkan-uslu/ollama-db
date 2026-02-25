@@ -46,6 +46,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
     toggleLanguage,
     setRamBucket,
     setParamSizeBucket,
+    setContextWindowBucket,
   } = hook;
 
   return (
@@ -128,6 +129,25 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                 label={b.label}
                 active={filters.ramBucket === key}
                 onToggle={() => setRamBucket(key)}
+              />
+            );
+          })}
+        </div>
+      </Section>
+
+      <Divider />
+
+      {/* Context Window */}
+      <Section title="Context Window">
+        <div className="flex flex-wrap gap-1.5">
+          {options.contextWindowBuckets.map((b) => {
+            const key = `${b.min}-${b.max}`;
+            return (
+              <FilterChip
+                key={key}
+                label={b.label}
+                active={filters.contextWindowBucket === key}
+                onToggle={() => setContextWindowBucket(key)}
               />
             );
           })}

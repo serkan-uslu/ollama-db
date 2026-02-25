@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/atoms/Badge';
 import { CopyCommand } from '@/components/ui/molecules/CopyCommand';
 import { cn } from '@/lib/utils/cn';
-import { formatPulls, formatRam } from '@/lib/utils/format';
+import { formatPulls, formatRam, formatContextWindow } from '@/lib/utils/format';
 import type { Model } from '@/lib/types/model';
 
 export type ModelCardModel = Pick<
@@ -14,6 +14,7 @@ export type ModelCardModel = Pick<
   | 'domain'
   | 'capabilities'
   | 'labels'
+  | 'memory_requirements'
   | 'min_ram_gb'
   | 'pulls'
   | 'last_updated_str'
@@ -39,6 +40,10 @@ export function ModelCard({ model, className }: ModelCardProps) {
   const numericLabels = model.labels.filter((l) => !isNaN(parseFloat(l)));
   const paramLabels = numericLabels.slice(0, 5);
   const extraCount = numericLabels.length - 5;
+  const maxCtx = Math.max(
+    ...(model.memory_requirements ?? []).map((r) => r.context_window ?? 0),
+    0,
+  );
 
   return (
     <article
@@ -104,12 +109,22 @@ export function ModelCard({ model, className }: ModelCardProps) {
 
       {/* Footer */}
       <div className="flex flex-col gap-2 pt-1 border-t border-[var(--color-border)]">
-        <span className="text-xs text-[var(--color-text-subtle)]">
-          Min RAM:{' '}
-          <span className="font-medium text-[var(--color-text-muted)]">
-            {formatRam(model.min_ram_gb)}
+        <div className="flex items-center gap-3 text-xs text-[var(--color-text-subtle)]">
+          <span>
+            Min RAM:{' '}
+            <span className="font-medium text-[var(--color-text-muted)]">
+              {formatRam(model.min_ram_gb)}
+            </span>
           </span>
-        </span>
+          {maxCtx > 0 && (
+            <span>
+              Ctx:{' '}
+              <span className="font-medium text-[var(--color-text-muted)]">
+                {formatContextWindow(maxCtx)}
+              </span>
+            </span>
+          )}
+        </div>
         <CopyCommand command={`ollama run ${model.model_identifier}`} />
       </div>
     </article>

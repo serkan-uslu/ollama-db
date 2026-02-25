@@ -21,7 +21,55 @@ export const metadata: Metadata = {
   },
   description:
     'Browse, search and filter 200+ open-source AI models available via Ollama. Find the right model by capability, domain, RAM requirement and more.',
-  metadataBase: new URL('https://ollama-db.vercel.app'),
+  metadataBase: new URL('https://ollama-explorer.vercel.app'),
+  keywords: [
+    'ollama',
+    'AI models',
+    'open-source LLM',
+    'large language model',
+    'local AI',
+    'llama',
+    'deepseek',
+    'mistral',
+    'gemma',
+    'model explorer',
+  ],
+  authors: [{ name: 'Serkan Uslu', url: 'https://github.com/serkan-uslu' }],
+  creator: 'Serkan Uslu',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://ollama-explorer.vercel.app',
+    siteName: 'Ollama Model Explorer',
+    title: 'Ollama Model Explorer',
+    description: 'Browse, search and filter 200+ open-source AI models available via Ollama.',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Ollama Model Explorer',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ollama Model Explorer',
+    description: 'Browse, search and filter 200+ open-source AI models available via Ollama.',
+    images: ['/og-image.png'],
+    creator: '@serkanuslu',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 // Injected before first paint to prevent FOUC

@@ -6,8 +6,17 @@ import { ModelsBrowser } from '@/components/features/models/ModelsBrowser';
 export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
-  title: 'Models',
-  description: 'Browse and filter 200+ open-source AI models available on Ollama.',
+  title: 'Browse AI Models',
+  description:
+    'Browse, search and filter 200+ open-source AI models available on Ollama by capability, domain, RAM, complexity and parameter size.',
+  alternates: {
+    canonical: 'https://ollama-explorer.vercel.app/models',
+  },
+  openGraph: {
+    url: 'https://ollama-explorer.vercel.app/models',
+    title: 'Browse AI Models | Ollama Model Explorer',
+    description: 'Browse, search and filter 200+ open-source AI models available on Ollama.',
+  },
 };
 
 export default function ModelsPage() {

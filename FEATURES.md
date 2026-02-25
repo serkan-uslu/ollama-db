@@ -8,29 +8,30 @@
 
 ## Legend
 
-| Symbol | Meaning |
-|---|---|
-| ✅ | Must have (MVP) |
-| 🔵 | Should have (v1 polish) |
-| 🟡 | Nice to have (v2) |
-| 🔴 | Future / research phase |
+| Symbol | Meaning                 |
+| ------ | ----------------------- |
+| ✅     | Must have (MVP)         |
+| 🔵     | Should have (v1 polish) |
+| 🟡     | Nice to have (v2)       |
+| 🔴     | Future / research phase |
 
 ---
 
 ## Pages Overview
 
-| Route | Description |
-|---|---|
-| `/` | Minimal hero landing page |
-| `/models` | Full model browser with search, filter, sort |
-| `/models/[id]` | Individual model detail page |
-| `/about` | About the project |
+| Route          | Description                                  |
+| -------------- | -------------------------------------------- |
+| `/`            | Minimal hero landing page                    |
+| `/models`      | Full model browser with search, filter, sort |
+| `/models/[id]` | Individual model detail page                 |
+| `/about`       | About the project                            |
 
 ---
 
 ## Page 1 — Home (`/`)
 
 ### Layout & Design
+
 - ✅ **Minimal hero section** — single-screen, no scroll required on desktop
 - ✅ **Headline + subline** — short, typographic, black/white only
 - ✅ **CTA button** — "Explore Models" → navigates to `/models`
@@ -63,35 +64,50 @@
 All filter values are computed at build time from `models.json` via `lib/data/filters.ts`. No hardcoded option lists in UI components.
 
 #### Capability filter (multi-select pills)
+
 From `capabilities` field — **5 values**:
+
 - `Tools` · `Thinking` · `Embedding` · `Vision` · `Cloud`
 
 #### Domain filter (single-select or multi-select pills)
+
 From `domain` field — **7 values**:
+
 - `General` · `Code` · `Language` · `Vision` · `Math` · `Medical` · `Embedding`
 
 #### Use Case filter (multi-select dropdown)
+
 From `use_cases[]` — **14 values**:
+
 - Chat Assistant · Code Generation · Code Review · Creative Writing · Function Calling · Image Understanding · Math · Question Answering · RAG / Retrieval · Reasoning · Role Play · Text Embedding · Text Summarization · Translation
 
 #### Complexity filter (toggle group)
+
 From `complexity` — **2 values**:
+
 - `Intermediate` · `Advanced`
 
 #### AI Language filter (multi-select dropdown)
+
 From `ai_languages[]` — **9 values**:
+
 - English · Multilingual · Chinese · Arabic · Japanese · German · French · Spanish · Korean
 
 #### Parameter Size filter (multi-select chips)
+
 From `labels[]` — e.g.:
+
 - `≤ 1B` · `1B–4B` · `4B–14B` · `14B–35B` · `35B+`  
-  *(buckets computed dynamically from numeric label values)*
+  _(buckets computed dynamically from numeric label values)_
 
 #### RAM Requirement filter (range slider or preset buckets)
+
 From `min_ram_gb` — **5 buckets**:
+
 - `< 4 GB` · `4–8 GB` · `8–16 GB` · `16–32 GB` · `32 GB+`
 
 #### Sort options (select / toggle)
+
 - Most Popular (pulls, descending) — **default**
 - Least Popular (pulls, ascending)
 - Smallest Model (min_ram_gb ascending)
@@ -100,6 +116,7 @@ From `min_ram_gb` — **5 buckets**:
 - A–Z (model_name)
 
 ### 2C. Filter UX
+
 - ✅ **Active filter chips** — each applied filter shown as a dismissible chip above the grid
 - ✅ **Reset all filters** button — clears all active filters + search
 - ✅ **Filter state in URL** — all active filters serialized into query params for shareability
@@ -109,6 +126,7 @@ From `min_ram_gb` — **5 buckets**:
 - 🔵 **No results state** — friendly empty state with clear instructions + reset CTA
 
 ### 2D. Model Grid / List
+
 - ✅ **Card grid layout** — responsive: 1 col mobile → 2 col tablet → 3 col desktop
 - ✅ **ModelCard** displays:
   - Model name (prominent)
@@ -125,6 +143,7 @@ From `min_ram_gb` — **5 buckets**:
 - 🔵 **ollama run command** — `ollama run {model_identifier}` shown on hover or card footer, one-click copy
 
 ### 2E. Model Detail (`/models/[id]`)
+
 - ✅ **Full model info** — all available fields rendered
 - ✅ **Memory requirements table** — all tags with size, quantization, RAM, context window
 - ✅ **Capabilities + Use cases** displayed as badge groups
@@ -150,16 +169,19 @@ From `min_ram_gb` — **5 buckets**:
 ## Global / Cross-Cutting Features
 
 ### Theme
+
 - ✅ **Light / Dark mode** — CSS variable tokens, Tailwind `dark:` strategy, `localStorage` persistence
 - ✅ **System preference detection** — respects `prefers-color-scheme` on first visit
 - ✅ **No flash of unstyled content (FOUC)** — theme script injected in `<head>` before paint
 
 ### Layout
+
 - ✅ **Header** — site wordmark + nav links (`Home`, `Models`, `About`) + theme toggle
 - ✅ **Footer** — minimal: copyright + data source link
 - ✅ **Responsive** — mobile-first, breakpoints: `sm:640` `md:768` `lg:1024` `xl:1280`
 
 ### Accessibility
+
 - ✅ **Keyboard navigation** — all interactive elements focusable and operable via keyboard
 - ✅ **ARIA labels** on icon-only buttons (theme toggle, close, copy)
 - ✅ **Focus rings** — visible, token-consistent outline on focus
@@ -167,6 +189,7 @@ From `min_ram_gb` — **5 buckets**:
 - ✅ **Semantic HTML** — proper use of `<main>`, `<nav>`, `<section>`, `<article>`, `<header>`, `<footer>`
 
 ### Performance
+
 - ✅ **Static generation** — all pages statically generated at build time (no server runtime required)
 - ✅ **Lazy client components** — filter panel, search, theme toggle loaded as client bundles; list/grid is server-rendered
 - 🔵 **Virtual list** — only visible model cards rendered in DOM when list is long
@@ -178,27 +201,27 @@ From `min_ram_gb` — **5 buckets**:
 ```ts
 interface Model {
   id: string;
-  model_identifier: string;       // e.g. "llama3.1"
-  model_name: string;             // display name
+  model_identifier: string; // e.g. "llama3.1"
+  model_name: string; // display name
   model_type: 'official';
   namespace: string | null;
-  url: string;                    // ollama.com source URL
+  url: string; // ollama.com source URL
   description: string;
-  capabilities: Capability[];     // Tools | Thinking | Embedding | Vision | Cloud
-  capability: string;             // primary capability
-  labels: string[];               // ["8b", "70b", "405b"]
+  capabilities: Capability[]; // Tools | Thinking | Embedding | Vision | Cloud
+  capability: string; // primary capability
+  labels: string[]; // ["8b", "70b", "405b"]
   memory_requirements: MemoryRequirement[];
   min_ram_gb: number;
   use_cases: string[];
-  domain: Domain;                 // General | Code | Vision | Math | Medical | Language | Embedding
+  domain: Domain; // General | Code | Vision | Math | Medical | Language | Embedding
   ai_languages: string[];
   complexity: 'advanced' | 'intermediate';
   best_for: string;
   pulls: number;
   tags: number;
-  last_updated: string;           // ISO date
-  last_updated_str: string;       // e.g. "1 year ago"
-  timestamp: string;              // scrape timestamp
+  last_updated: string; // ISO date
+  last_updated_str: string; // e.g. "1 year ago"
+  timestamp: string; // scrape timestamp
 }
 
 interface MemoryRequirement {
@@ -206,7 +229,7 @@ interface MemoryRequirement {
   size: string;
   size_gb: number;
   recommended_ram_gb: number;
-  quantization: string;           // q4_k_m | q8_0 | f16 | etc.
+  quantization: string; // q4_k_m | q8_0 | f16 | etc.
   context: string;
   context_window: number;
 }
@@ -221,13 +244,13 @@ All filter options are derived in `lib/data/filters.ts` at build time:
 ```ts
 export function deriveFilterOptions(models: Model[]): FilterOptions {
   return {
-    capabilities: unique(models.flatMap(m => m.capabilities)).sort(),
-    domains:      unique(models.map(m => m.domain)).sort(),
-    useCases:     unique(models.flatMap(m => m.use_cases)).sort(),
-    complexities: unique(models.map(m => m.complexity)).sort(),
-    languages:    unique(models.flatMap(m => m.ai_languages)).sort(),
-    paramSizes:   deriveParamSizeBuckets(models),
-    ramBuckets:   deriveRamBuckets(models),
+    capabilities: unique(models.flatMap((m) => m.capabilities)).sort(),
+    domains: unique(models.map((m) => m.domain)).sort(),
+    useCases: unique(models.flatMap((m) => m.use_cases)).sort(),
+    complexities: unique(models.map((m) => m.complexity)).sort(),
+    languages: unique(models.flatMap((m) => m.ai_languages)).sort(),
+    paramSizes: deriveParamSizeBuckets(models),
+    ramBuckets: deriveRamBuckets(models),
   };
 }
 ```
@@ -239,6 +262,7 @@ This ensures: adding new models to `models.json` automatically makes new filter 
 ## Semantic Search Plan (v2)
 
 ### Option A — Client-side TF-IDF (No Backend)
+
 1. At build time, generate a lightweight inverted index from `model_name + description + use_cases + best_for`.
 2. Store as a JSON artifact in `public/search-index.json`.
 3. On the client, load index lazily on first keystroke.
@@ -248,6 +272,7 @@ This ensures: adding new models to `models.json` automatically makes new filter 
 **Trade-off:** Adds ~50–100KB to client bundle (JSON index). No API dependency.
 
 ### Option B — Ollama Embedding API (Future)
+
 1. When user has a local Ollama instance running, POST search query to `localhost:11434/api/embeddings` using `nomic-embed-text`.
 2. Compare query embedding against pre-computed model embeddings (stored in `public/embeddings.json`).
 3. Return top-k results by cosine similarity.

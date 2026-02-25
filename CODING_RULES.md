@@ -63,11 +63,13 @@ public/
 ## 2. SOLID Principles
 
 ### S — Single Responsibility
+
 - Every file/component does **one thing** only.
 - Data fetching, transformation, and rendering live in separate layers.
 - A component that renders a `ModelCard` never fetches data — it only receives props.
 
 ### O — Open/Closed
+
 - Components are **open for extension via props/composition**, closed for internal modification.
 - Use `variant` props pattern for UI variants instead of conditional class hacks.
 
@@ -80,6 +82,7 @@ public/
 ```
 
 ### L — Liskov Substitution
+
 - Component props extend HTML element props so they are drop-in replacements.
 - Never restrict inherited HTML attributes without justification.
 
@@ -90,6 +93,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 ```
 
 ### I — Interface Segregation
+
 - Keep prop interfaces minimal. Split large prop objects into focused sub-interfaces.
 - Avoid passing entire model objects into leaf UI components — destructure only what is needed.
 
@@ -105,6 +109,7 @@ interface ModelCardProps {
 ```
 
 ### D — Dependency Inversion
+
 - Components depend on **abstractions (interfaces/types)**, not concrete data shapes.
 - Data layer (lib/data) is consumed via typed functions — never import raw JSON from components.
 
@@ -139,16 +144,19 @@ export type Capability = 'Tools' | 'Thinking' | 'Embedding' | 'Vision' | 'Cloud'
 ## 4. Component Rules
 
 ### 4.1 File Naming
-| Type | Convention | Example |
-|---|---|---|
-| React component | `PascalCase.tsx` | `ModelCard.tsx` |
-| Hook | `camelCase.ts` starting with `use` | `useFilters.ts` |
-| Utility | `camelCase.ts` | `format.ts` |
-| Type definition | `camelCase.ts` | `model.ts` |
-| Page | `page.tsx` (Next.js App Router standard) | `page.tsx` |
+
+| Type            | Convention                               | Example         |
+| --------------- | ---------------------------------------- | --------------- |
+| React component | `PascalCase.tsx`                         | `ModelCard.tsx` |
+| Hook            | `camelCase.ts` starting with `use`       | `useFilters.ts` |
+| Utility         | `camelCase.ts`                           | `format.ts`     |
+| Type definition | `camelCase.ts`                           | `model.ts`      |
+| Page            | `page.tsx` (Next.js App Router standard) | `page.tsx`      |
 
 ### 4.2 Component Structure Order
+
 Each component file must follow this order:
+
 1. Imports (external → internal → types → styles)
 2. Type/interface definitions
 3. Subcomponents (if any, colocated when small)
@@ -156,6 +164,7 @@ Each component file must follow this order:
 5. Named exports (helpers, constants)
 
 ### 4.3 Composition Over Configuration
+
 Prefer composable child components over a single component with many boolean props.
 
 ```tsx
@@ -171,6 +180,7 @@ Prefer composable child components over a single component with many boolean pro
 ```
 
 ### 4.4 Server vs. Client Components
+
 - Default to **Server Components** in the App Router.
 - Add `'use client'` **only** when the component uses:
   - `useState` / `useReducer` / `useEffect`
@@ -187,13 +197,13 @@ All UI components are organized using **Atomic Design** methodology. Every compo
 
 ### 5.1 Levels
 
-| Level | Location | Description | Examples |
-|---|---|---|---|
-| **Atoms** | `components/ui/` | Smallest indivisible UI primitives. No business logic. No data dependencies. | `Button`, `Badge`, `Input`, `Icon`, `Spinner`, `Divider` |
-| **Molecules** | `components/ui/` | Combinations of 2–4 atoms forming a cohesive unit with a single purpose. | `SearchInput` (Input + Icon + Button), `FilterChip` (Badge + dismiss Icon), `StatCard` (label + value atoms) |
-| **Organisms** | `components/features/` | Complex UI sections composed of molecules and atoms. May be domain-aware. | `ModelCard`, `FilterPanel`, `ModelGrid`, `Header`, `Footer` |
-| **Templates** | `components/templates/` | Page-level layout scaffolds. Define regions (sidebar, main, header slot). No real data. | `BrowseLayout`, `DetailLayout` |
-| **Pages** | `app/**/page.tsx` | Next.js pages. Wire templates with real data. Only place that connects data layer to UI. | `app/models/page.tsx` |
+| Level         | Location                | Description                                                                              | Examples                                                                                                     |
+| ------------- | ----------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **Atoms**     | `components/ui/`        | Smallest indivisible UI primitives. No business logic. No data dependencies.             | `Button`, `Badge`, `Input`, `Icon`, `Spinner`, `Divider`                                                     |
+| **Molecules** | `components/ui/`        | Combinations of 2–4 atoms forming a cohesive unit with a single purpose.                 | `SearchInput` (Input + Icon + Button), `FilterChip` (Badge + dismiss Icon), `StatCard` (label + value atoms) |
+| **Organisms** | `components/features/`  | Complex UI sections composed of molecules and atoms. May be domain-aware.                | `ModelCard`, `FilterPanel`, `ModelGrid`, `Header`, `Footer`                                                  |
+| **Templates** | `components/templates/` | Page-level layout scaffolds. Define regions (sidebar, main, header slot). No real data.  | `BrowseLayout`, `DetailLayout`                                                                               |
+| **Pages**     | `app/**/page.tsx`       | Next.js pages. Wire templates with real data. Only place that connects data layer to UI. | `app/models/page.tsx`                                                                                        |
 
 ### 5.2 Folder Mapping
 
@@ -227,6 +237,7 @@ components/
 ```
 
 ### 5.3 Atom Rules
+
 - Must be **fully stateless** or hold only local interaction state (hover, focus).
 - Must accept and forward all native HTML attributes via `...rest` spread.
 - Must never import from `lib/data/` or any domain type.
@@ -240,7 +251,13 @@ interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   size?: 'sm' | 'md';
 }
 
-export function Badge({ variant = 'default', size = 'sm', className, children, ...rest }: BadgeProps) {
+export function Badge({
+  variant = 'default',
+  size = 'sm',
+  className,
+  children,
+  ...rest
+}: BadgeProps) {
   return (
     <span className={cn(badgeVariants({ variant, size }), className)} {...rest}>
       {children}
@@ -253,6 +270,7 @@ import type { Capability } from '@/lib/types/model'; // ← NOT allowed in atoms
 ```
 
 ### 5.4 Molecule Rules
+
 - Compose **2–4 atoms** only. If more are needed, it is an organism.
 - May have **local state** (e.g., input value before debounce).
 - Accept typed, focused props — never accept raw `Model` objects.
@@ -269,6 +287,7 @@ interface SearchInputProps {
 ```
 
 ### 5.5 Organism Rules
+
 - May be **domain-aware** — can accept domain types (e.g., `Model`, `FilterOptions`) as props.
 - Must **not** fetch data directly. Data is passed via props from pages or layouts.
 - Should be independently testable with mock data.
@@ -277,11 +296,15 @@ interface SearchInputProps {
 ```tsx
 // ✅ Correct Organism — domain-aware but data is passed in
 interface ModelCardProps {
-  model: Pick<Model, 'model_name' | 'description' | 'domain' | 'capabilities' | 'pulls' | 'min_ram_gb' | 'labels'>;
+  model: Pick<
+    Model,
+    'model_name' | 'description' | 'domain' | 'capabilities' | 'pulls' | 'min_ram_gb' | 'labels'
+  >;
 }
 ```
 
 ### 5.6 Template Rules
+
 - Define **slot-based layout** using React children or named slot props.
 - Contain **no real content** — only layout structure (grid, sidebar, padding).
 - Are always **Server Components**.
@@ -312,100 +335,107 @@ Import direction is **strictly top-down**. Lower levels must never import from h
 Pages  →  Templates  →  Organisms  →  Molecules  →  Atoms
 ```
 
-| From \ To | Atoms | Molecules | Organisms | Templates | Pages |
-|---|---|---|---|---|---|
-| **Atoms** | ✅ self | ❌ | ❌ | ❌ | ❌ |
-| **Molecules** | ✅ | ✅ self | ❌ | ❌ | ❌ |
-| **Organisms** | ✅ | ✅ | ✅ self | ❌ | ❌ |
-| **Templates** | ✅ | ✅ | ✅ | ✅ self | ❌ |
-| **Pages** | ✅ | ✅ | ✅ | ✅ | ✅ self |
+| From \ To     | Atoms   | Molecules | Organisms | Templates | Pages   |
+| ------------- | ------- | --------- | --------- | --------- | ------- |
+| **Atoms**     | ✅ self | ❌        | ❌        | ❌        | ❌      |
+| **Molecules** | ✅      | ✅ self   | ❌        | ❌        | ❌      |
+| **Organisms** | ✅      | ✅        | ✅ self   | ❌        | ❌      |
+| **Templates** | ✅      | ✅        | ✅        | ✅ self   | ❌      |
+| **Pages**     | ✅      | ✅        | ✅        | ✅        | ✅ self |
 
 ---
 
 ## 6. Design System & Tokens
 
 ### 6.1 Color Palette (Minimal Monochrome)
+
 All colors are defined as CSS custom properties in `globals.css` and consumed via Tailwind.
 
 ```css
 /* Light Mode */
 :root {
-  --color-bg:           #ffffff;
-  --color-bg-subtle:    #f9f9f9;
-  --color-bg-muted:     #f3f3f3;
-  --color-border:       #e5e5e5;
-  --color-border-strong:#d4d4d4;
-  --color-text:         #0a0a0a;
-  --color-text-muted:   #525252;
-  --color-text-subtle:  #a3a3a3;
-  --color-accent:       #0a0a0a;
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f9f9f9;
+  --color-bg-muted: #f3f3f3;
+  --color-border: #e5e5e5;
+  --color-border-strong: #d4d4d4;
+  --color-text: #0a0a0a;
+  --color-text-muted: #525252;
+  --color-text-subtle: #a3a3a3;
+  --color-accent: #0a0a0a;
   --color-accent-hover: #262626;
-  --color-on-accent:    #ffffff;
+  --color-on-accent: #ffffff;
 }
 
 /* Dark Mode */
 .dark {
-  --color-bg:           #0a0a0a;
-  --color-bg-subtle:    #111111;
-  --color-bg-muted:     #1a1a1a;
-  --color-border:       #262626;
-  --color-border-strong:#404040;
-  --color-text:         #fafafa;
-  --color-text-muted:   #a3a3a3;
-  --color-text-subtle:  #525252;
-  --color-accent:       #fafafa;
+  --color-bg: #0a0a0a;
+  --color-bg-subtle: #111111;
+  --color-bg-muted: #1a1a1a;
+  --color-border: #262626;
+  --color-border-strong: #404040;
+  --color-text: #fafafa;
+  --color-text-muted: #a3a3a3;
+  --color-text-subtle: #525252;
+  --color-accent: #fafafa;
   --color-accent-hover: #e5e5e5;
-  --color-on-accent:    #0a0a0a;
+  --color-on-accent: #0a0a0a;
 }
 ```
 
 ### 6.2 Typography Scale
+
 ```css
 :root {
   --font-sans: 'Geist', 'Inter', system-ui, sans-serif;
   --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
 
-  --text-xs:   0.75rem;   /* 12px */
-  --text-sm:   0.875rem;  /* 14px */
-  --text-base: 1rem;      /* 16px */
-  --text-lg:   1.125rem;  /* 18px */
-  --text-xl:   1.25rem;   /* 20px */
-  --text-2xl:  1.5rem;    /* 24px */
-  --text-3xl:  1.875rem;  /* 30px */
-  --text-4xl:  2.25rem;   /* 36px */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
 }
 ```
 
 ### 6.3 Spacing Scale (4px base grid)
+
 Use only multiples of 4 (Tailwind's default 4px base):  
 `4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 48 · 64 · 80 · 96`
 
 ### 6.4 Border Radius
+
 ```css
 :root {
-  --radius-sm:  0.25rem;   /* 4px  — tags, badges */
-  --radius-md:  0.5rem;    /* 8px  — cards, inputs */
-  --radius-lg:  0.75rem;   /* 12px — panels */
-  --radius-full: 9999px;   /* pills, avatars */
+  --radius-sm: 0.25rem; /* 4px  — tags, badges */
+  --radius-md: 0.5rem; /* 8px  — cards, inputs */
+  --radius-lg: 0.75rem; /* 12px — panels */
+  --radius-full: 9999px; /* pills, avatars */
 }
 ```
 
 ### 6.5 Shadow
+
 Keep shadows minimal and monochromatic. Avoid colored shadows.
+
 ```css
 :root {
-  --shadow-sm:  0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.08);
-  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 ```
 
 ### 6.6 Motion / Transition
+
 ```css
 :root {
-  --transition-fast:   150ms ease;
+  --transition-fast: 150ms ease;
   --transition-normal: 200ms ease;
-  --transition-slow:   300ms ease;
+  --transition-slow: 300ms ease;
 }
 ```
 
@@ -423,7 +453,12 @@ Keep shadows minimal and monochromatic. Avoid colored shadows.
 // ✅ Good
 const cn = (...args) => twMerge(clsx(args));
 
-<div className={cn('flex items-center gap-4 px-4 py-3 text-sm rounded-md border', isActive && 'bg-[var(--color-bg-muted)]')} />
+<div
+  className={cn(
+    'flex items-center gap-4 px-4 py-3 text-sm rounded-md border',
+    isActive && 'bg-[var(--color-bg-muted)]',
+  )}
+/>;
 ```
 
 ---
@@ -458,14 +493,14 @@ export function getFilterOptions(): FilterOptions { ... }  // derived dynamicall
 
 ## 10. Naming Conventions
 
-| Entity | Example |
-|---|---|
-| Component | `ModelCard`, `FilterPanel`, `SearchInput` |
-| Hook | `useModelFilters`, `useDebounce`, `useSearch` |
-| Utility fn | `formatPulls`, `deriveFilters`, `sortModels` |
-| Type/Interface | `Model`, `FilterOptions`, `SearchResult` |
-| CSS variable | `--color-text`, `--radius-md` |
-| Constant | `DEFAULT_SORT_ORDER`, `ITEMS_PER_PAGE` |
+| Entity         | Example                                       |
+| -------------- | --------------------------------------------- |
+| Component      | `ModelCard`, `FilterPanel`, `SearchInput`     |
+| Hook           | `useModelFilters`, `useDebounce`, `useSearch` |
+| Utility fn     | `formatPulls`, `deriveFilters`, `sortModels`  |
+| Type/Interface | `Model`, `FilterOptions`, `SearchResult`      |
+| CSS variable   | `--color-text`, `--radius-md`                 |
+| Constant       | `DEFAULT_SORT_ORDER`, `ITEMS_PER_PAGE`        |
 
 ---
 
@@ -511,25 +546,25 @@ This application must be **fully functional and visually correct on all screen s
 
 Use only the standard Tailwind breakpoints. Do not introduce custom breakpoints unless absolutely justified and documented.
 
-| Prefix | Min Width | Target Device |
-|---|---|---|
-| *(none)* | 0px | Mobile (default) |
-| `sm:` | 640px | Large mobile / small tablet |
-| `md:` | 768px | Tablet |
-| `lg:` | 1024px | Laptop / desktop |
-| `xl:` | 1280px | Wide desktop |
-| `2xl:` | 1536px | Ultra-wide (use sparingly) |
+| Prefix   | Min Width | Target Device               |
+| -------- | --------- | --------------------------- |
+| _(none)_ | 0px       | Mobile (default)            |
+| `sm:`    | 640px     | Large mobile / small tablet |
+| `md:`    | 768px     | Tablet                      |
+| `lg:`    | 1024px    | Laptop / desktop            |
+| `xl:`    | 1280px    | Wide desktop                |
+| `2xl:`   | 1536px    | Ultra-wide (use sparingly)  |
 
 ### 13.3 Layout Responsiveness
 
-| UI Element | Mobile | Tablet (`md:`) | Desktop (`lg:`) |
-|---|---|---|---|
-| Navigation | Hidden, hamburger menu or bottom bar | Inline top bar | Inline top bar with full links |
-| Filter panel | Bottom drawer / slide-up sheet | Collapsible sidebar | Persistent left sidebar |
-| Model grid | 1 column | 2 columns | 3 columns |
-| Model card | Full width, stacked info | Normal card | Normal card with hover state |
-| Search bar | Full width, sticky top | Inline in header | Inline in header |
-| Detail page | Single column | Single column with wider content | Two-column (info + sidebar) |
+| UI Element   | Mobile                               | Tablet (`md:`)                   | Desktop (`lg:`)                |
+| ------------ | ------------------------------------ | -------------------------------- | ------------------------------ |
+| Navigation   | Hidden, hamburger menu or bottom bar | Inline top bar                   | Inline top bar with full links |
+| Filter panel | Bottom drawer / slide-up sheet       | Collapsible sidebar              | Persistent left sidebar        |
+| Model grid   | 1 column                             | 2 columns                        | 3 columns                      |
+| Model card   | Full width, stacked info             | Normal card                      | Normal card with hover state   |
+| Search bar   | Full width, sticky top               | Inline in header                 | Inline in header               |
+| Detail page  | Single column                        | Single column with wider content | Two-column (info + sidebar)    |
 
 ### 13.4 Touch & Interaction Rules
 
@@ -548,33 +583,41 @@ Use only the standard Tailwind breakpoints. Do not introduce custom breakpoints 
 ### 13.5 Component-Level Responsive Rules
 
 #### Header / Navigation
+
 - On mobile: show logo + theme toggle only. Navigation links collapse into a **hamburger menu** (slide-down or drawer).
 - The nav drawer must be dismissible via: tap outside, swipe, or a close button.
 - Active route is always visually indicated on all breakpoints.
 
 #### Filter Panel
+
 - On mobile/tablet: hidden by default, opened via a **"Filters" button** that triggers a bottom sheet or side drawer.
 - The button shows the count of active filters: `Filters (3)`.
 - When closed, active filters are shown as dismissible chips in a horizontal scroll row above the grid.
 - On desktop: persistent left sidebar, always visible.
 
 #### Model Grid
+
 - Uses CSS Grid with responsive column count:
+
 ```tsx
 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 ```
+
 - Cards never overflow their column. Long text is truncated with `line-clamp`.
 
 #### Model Card
+
 - On mobile, the `ollama run` copy command is always visible (not hidden behind hover).
 - Capability badges wrap onto multiple lines — no horizontal overflow.
 
 #### Search Input
+
 - On mobile: full width, sticky below the header.
 - Clear (`×`) button appears whenever the input has a value.
 - Keyboard `Escape` clears the search and dismisses the mobile keyboard.
 
 #### Model Detail Page
+
 - Memory requirements table: horizontally scrollable on mobile (`overflow-x-auto`) with the table retaining its full column set.
 - Long `readme` text reflows naturally — no fixed-width prose containers.
 
@@ -614,14 +657,14 @@ The root layout must always include the viewport meta tag (Next.js sets this by 
 
 Before any feature is considered complete, it must be validated at these viewport widths:
 
-| Label | Width |
-|---|---|
-| Mobile S | 320px |
-| Mobile M | 375px |
-| Mobile L | 428px |
-| Tablet | 768px |
-| Laptop | 1024px |
-| Desktop | 1280px |
+| Label    | Width  |
+| -------- | ------ |
+| Mobile S | 320px  |
+| Mobile M | 375px  |
+| Mobile L | 428px  |
+| Tablet   | 768px  |
+| Laptop   | 1024px |
+| Desktop  | 1280px |
 
 Use browser DevTools device emulation. Every interactive feature (search, filter, navigation, copy command, theme toggle) must be **fully operable** at all widths above.
 
@@ -693,17 +736,17 @@ All commit messages must follow the **Conventional Commits** specification enfor
 
 ### Allowed Types
 
-| Type | When to use |
-|---|---|
-| `feat` | A new feature |
-| `fix` | A bug fix |
+| Type       | When to use                                             |
+| ---------- | ------------------------------------------------------- |
+| `feat`     | A new feature                                           |
+| `fix`      | A bug fix                                               |
 | `refactor` | Code change that neither fixes a bug nor adds a feature |
-| `style` | Formatting, whitespace — no logic change |
-| `chore` | Tooling, config, dependency updates |
-| `docs` | Documentation only |
-| `perf` | Performance improvement |
-| `test` | Adding or updating tests |
-| `revert` | Reverting a previous commit |
+| `style`    | Formatting, whitespace — no logic change                |
+| `chore`    | Tooling, config, dependency updates                     |
+| `docs`     | Documentation only                                      |
+| `perf`     | Performance improvement                                 |
+| `test`     | Adding or updating tests                                |
+| `revert`   | Reverting a previous commit                             |
 
 ### Allowed Scopes (project-specific)
 
@@ -734,7 +777,19 @@ export default {
     'scope-enum': [
       2,
       'always',
-      ['ui', 'models', 'filters', 'search', 'layout', 'theme', 'data', 'types', 'hooks', 'config', 'deps'],
+      [
+        'ui',
+        'models',
+        'filters',
+        'search',
+        'layout',
+        'theme',
+        'data',
+        'types',
+        'hooks',
+        'config',
+        'deps',
+      ],
     ],
     'subject-max-length': [2, 'always', 72],
     'body-max-line-length': [1, 'always', 100],

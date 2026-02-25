@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Github } from 'lucide-react';
 import { Divider } from '@/components/ui/atoms/Divider';
 
 export function Footer() {
@@ -9,17 +10,29 @@ export function Footer() {
         <p className="text-xs text-[var(--color-text-subtle)]">
           © {new Date().getFullYear()} Ollama Explorer
         </p>
-        <p className="text-xs text-[var(--color-text-subtle)]">
-          Data sourced from{' '}
+        <div className="flex items-center gap-4">
           <Link
-            href="https://ollama.com/library"
+            href="https://github.com/serkan-uslu/ollama-explorer"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:text-[var(--color-text-muted)] transition-colors"
+            className="flex items-center gap-1.5 text-xs text-[var(--color-text-subtle)] hover:text-[var(--color-text-muted)] transition-colors"
+            aria-label="View source on GitHub"
           >
-            ollama.com
+            <Github size={14} aria-hidden />
+            <span className="hidden sm:inline">GitHub</span>
           </Link>
-        </p>
+          <p className="text-xs text-[var(--color-text-subtle)]">
+            Data from{' '}
+            <Link
+              href="https://ollama.com/library"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2 hover:text-[var(--color-text-muted)] transition-colors"
+            >
+              ollama.com
+            </Link>
+          </p>
+        </div>
       </div>
     </footer>
   );

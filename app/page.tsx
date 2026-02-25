@@ -1,11 +1,27 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { StatCard } from '@/components/ui/molecules/StatCard';
 import { Button } from '@/components/ui/atoms/Button';
+import { JsonLd } from '@/components/ui/atoms/JsonLd';
 import { getAllModels, getTopModel, getSmallestModel } from '@/lib/data/models';
 import { formatPulls, formatRam } from '@/lib/utils/format';
 import { deriveFilterOptions } from '@/lib/data/filters';
 
 export const dynamic = 'force-static';
+
+export const metadata: Metadata = {
+  title: 'Ollama Model Explorer — Browse Open-Source AI Models',
+  description:
+    'Discover and compare 200+ open-source AI models available via Ollama. Filter by capability, domain, RAM requirement and parameter size.',
+  alternates: {
+    canonical: 'https://ollama-explorer.vercel.app',
+  },
+  openGraph: {
+    url: 'https://ollama-explorer.vercel.app',
+    title: 'Ollama Model Explorer',
+    description: 'Discover and compare 200+ open-source AI models available via Ollama.',
+  },
+};
 
 export default function HomePage() {
   const models = getAllModels();
@@ -13,8 +29,25 @@ export default function HomePage() {
   const smallestModel = getSmallestModel();
   const options = deriveFilterOptions(models);
 
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Ollama Model Explorer',
+    url: 'https://ollama-explorer.vercel.app',
+    description: 'Browse, search and filter 200+ open-source AI models available via Ollama.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://ollama-explorer.vercel.app/models?q={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return (
     <main id="main" className="flex-1 flex flex-col">
+      <JsonLd data={websiteSchema} />
       {/* Hero */}
       <section className="flex-1 flex flex-col items-center justify-center px-4 py-20 sm:py-28 text-center">
         <p className="text-5xl sm:text-6xl mb-6 select-none" aria-hidden>

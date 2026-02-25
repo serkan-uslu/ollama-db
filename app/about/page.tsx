@@ -11,7 +11,16 @@ export const dynamic = 'force-static';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'About the Ollama Model Explorer project.',
+  description:
+    'Ollama Model Explorer is a fast, minimal directory for browsing 200+ open-source AI models scraped from ollama.com. Built with Next.js, React and Tailwind CSS.',
+  alternates: {
+    canonical: 'https://ollama-explorer.vercel.app/about',
+  },
+  openGraph: {
+    url: 'https://ollama-explorer.vercel.app/about',
+    title: 'About | Ollama Model Explorer',
+    description: 'Learn about the Ollama Model Explorer project, its data sources and tech stack.',
+  },
 };
 
 export default function AboutPage() {

@@ -6,6 +6,7 @@ import { getAllModels, getModelById } from '@/lib/data/models';
 import { Badge } from '@/components/ui/atoms/Badge';
 import { Button } from '@/components/ui/atoms/Button';
 import { Divider } from '@/components/ui/atoms/Divider';
+import { JsonLd } from '@/components/ui/atoms/JsonLd';
 import { CopyCommand } from '@/components/ui/molecules/CopyCommand';
 import { DetailLayout } from '@/components/templates/DetailLayout';
 import { formatPulls, formatRam, formatDate } from '@/lib/utils/format';
@@ -25,9 +26,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { id } = await params;
   const model = getModelById(id);
   if (!model) return {};
+
+  const url = `https://ollama-explorer.vercel.app/models/${model.id}`;
+  const keywords = [
+    model.model_name,
+    model.domain,
+    ...model.capabilities,
+    ...(model.use_cases ?? []),
+    'ollama',
+    'AI model',
+    'LLM',
+  ].filter(Boolean);
+
   return {
     title: model.model_name,
     description: model.description,
+    keywords,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title: `${model.model_name} | Ollama Model Explorer`,
+      description: model.description,
+    },
+    twitter: {
+      card: 'summary',
+      title: `${model.model_name} | Ollama Model Explorer`,
+      description: model.description,
+    },
   };
 }
 
@@ -36,16 +62,75 @@ export default async function ModelDetailPage({ params }: PageProps) {
   const model = getModelById(id);
   if (!model) notFound();
 
+  const url = `https://ollama-explorer.vercel.app/models/${model.id}`;
+
+  const softwareSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: model.model_name,
+    description: model.description,
+    url,
+    applicationCategory: 'AI / Machine Learning',
+    operatingSystem: 'Linux, macOS, Windows',
+    keywords: [model.domain, ...model.capabilities, ...(model.use_cases ?? [])]
+      .filter(Boolean)
+      .join(', '),
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://ollama-explorer.vercel.app',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Models',
+        item: 'https://ollama-explorer.vercel.app/models',
+      },
+      { '@type': 'ListItem', position: 3, name: model.model_name, item: url },
+    ],
+  };
+
   return (
     <div className="min-h-[calc(100dvh-3.5rem)]">
+      <JsonLd data={softwareSchema} />
+      <JsonLd data={breadcrumbSchema} />
       <DetailLayout
         back={
-          <Link href="/models">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft size={14} />
-              Back to models
-            </Button>
-          </Link>
+          <div className="flex flex-col gap-2">
+            {/* Breadcrumb nav — visible UI */}
+            <nav
+              aria-label="Breadcrumb"
+              className="flex items-center gap-1.5 text-xs text-[var(--color-text-subtle)]"
+            >
+              <Link href="/" className="hover:text-[var(--color-text-muted)] transition-colors">
+                Home
+              </Link>
+              <span aria-hidden>/</span>
+              <Link
+                href="/models"
+                className="hover:text-[var(--color-text-muted)] transition-colors"
+              >
+                Models
+              </Link>
+              <span aria-hidden>/</span>
+              <span className="text-[var(--color-text-muted)] truncate max-w-[160px]">
+                {model.model_name}
+              </span>
+            </nav>
+            <Link href="/models">
+              <Button variant="ghost" size="sm">
+                <ArrowLeft size={14} />
+                Back to models
+              </Button>
+            </Link>
+          </div>
         }
         header={
           <div className="flex flex-col gap-3">

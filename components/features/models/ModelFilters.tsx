@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils/cn';
 import type { FilterOptions } from '@/lib/types/filter';
 import type { Capability, Complexity, Domain } from '@/lib/types/model';
 import type { useFilters } from '@/lib/hooks/useFilters';
-import { SORT_OPTIONS } from '@/lib/utils/format';
+import { SORT_OPTIONS } from '@/lib/constants';
 
 type FiltersHook = ReturnType<typeof useFilters>;
 

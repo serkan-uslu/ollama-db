@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import type { ActiveFilters } from '@/lib/types/filter';
 import type { Capability, Complexity, Domain } from '@/lib/types/model';
-import { DEFAULT_SORT } from '@/lib/utils/format';
+import { DEFAULT_SORT } from '@/lib/constants';
 
 const INITIAL: ActiveFilters = {
   search: '',

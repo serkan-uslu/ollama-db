@@ -1,7 +1,8 @@
 import type { Model, SortOption } from '@/lib/types/model';
 import type { ActiveFilters } from '@/lib/types/filter';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const rawData = require('@/public/models.json') as Model[];
+import modelsJson from '@/public/models.json';
+
+const rawData = modelsJson as Model[];
 
 export function getAllModels(): Model[] {
   return rawData;

@@ -11,51 +11,84 @@
 
 ```
 app/
-  (home)/               # Home route group
-    page.tsx
-  models/               # Models listing page
-    page.tsx
-    [id]/               # Model detail page
-      page.tsx
-  about/                # About page
-    page.tsx
-  layout.tsx            # Root layout (providers, theme)
-  globals.css           # Design tokens + global styles
+  layout.tsx                    # Root layout — providers, fonts, global metadata, FOUC script
+  page.tsx                      # Home — hero + stats (force-static)
+  models/
+    page.tsx                    # Model browser with filters (force-static)
+    [id]/
+      page.tsx                  # Model detail page (generateStaticParams)
+      opengraph-image.tsx       # Dynamic per-model OG image (edge ImageResponse)
+  about/
+    page.tsx                    # About page (force-static)
+  opengraph-image.tsx           # Global OG image (edge ImageResponse)
+  robots.ts                     # /robots.txt
+  sitemap.ts                    # /sitemap.xml
+  globals.css                   # Design tokens + base reset
 
 components/
-  ui/                   # Primitive, stateless UI atoms
-    Button.tsx
-    Badge.tsx
-    Input.tsx
-    Card.tsx
-  features/             # Feature-specific composite components
-    models/
-      ModelCard.tsx
-      ModelFilters.tsx
-      ModelSearch.tsx
-      ModelGrid.tsx
-    layout/
-      Header.tsx
-      Footer.tsx
-      ThemeToggle.tsx
+  ui/
+    atoms/                      # Button, Badge, Input, Divider, Spinner, JsonLd
+      index.ts                  # Barrel export
+    molecules/                  # SearchInput, FilterChip, StatCard, CopyCommand
+      index.ts                  # Barrel export
+  features/
+    layout/                     # Header, Footer, ThemeToggle
+      index.ts                  # Barrel export
+    models/                     # ModelCard, ModelFilters, ModelGrid, ModelsBrowser
+      index.ts                  # Barrel export
+  templates/                    # BrowseLayout, DetailLayout
+    index.ts                    # Barrel export
 
 lib/
-  data/                 # Data access layer
-    models.ts           # Model data loaders & selectors
-    filters.ts          # Dynamic filter derivation
-  utils/                # Pure utility functions
-    format.ts
-    search.ts
-  types/                # TypeScript type definitions
+  constants.ts                  # App-wide constants (sort options, pagination)
+  data/                         # Data access layer
+    models.ts                   # Model loaders, filtering, sorting
+    filters.ts                  # Dynamic filter option derivation
+    index.ts                    # Barrel export
+  types/                        # TypeScript type definitions
     model.ts
     filter.ts
-  hooks/                # Custom React hooks
+    index.ts                    # Barrel export
+  utils/                        # Pure utility functions
+    cn.ts
+    format.ts
+    index.ts                    # Barrel export
+  hooks/                        # Custom React hooks
     useFilters.ts
-    useSearch.ts
+    useTheme.ts
     useDebounce.ts
+    index.ts                    # Barrel export
 
 public/
-  models.json           # Source data
+  models.json                   # Source data — 214 models from ollama.com/library
+```
+
+### 1.2 Barrel Exports (`index.ts`)
+
+Every directory that groups related modules **must** have an `index.ts` barrel file.
+This enables clean grouped imports and decouples import consumers from file locations.
+
+```ts
+// ✅ Good — barrel import
+import { Button, Badge, Divider } from '@/components/ui/atoms';
+import { useFilters, useDebounce } from '@/lib/hooks';
+import { getAllModels, getModelById } from '@/lib/data';
+
+// ❌ Bad — noisy deep-path imports
+import { Button } from '@/components/ui/atoms/Button';
+import { Badge } from '@/components/ui/atoms/Badge';
+import { getAllModels } from '@/lib/data/models';
+```
+
+**Exception**: sibling components within the same directory import each other using **relative paths** to avoid circular barrel references:
+
+```ts
+// ✅ Inside ModelsBrowser.tsx — siblings use relative imports
+import { ModelFilters } from './ModelFilters';
+import { ModelGrid } from './ModelGrid';
+
+// ❌ Would create circular ref via the barrel
+import { ModelFilters, ModelGrid } from '@/components/features/models';
 ```
 
 ---
@@ -466,19 +499,25 @@ const cn = (...args) => twMerge(clsx(args));
 ## 8. Data Layer Rules
 
 - All data access is isolated in `lib/data/`.
-- Raw JSON is never imported outside of `lib/data/models.ts`.
+- Raw JSON is never imported outside of `lib/data/models.ts`. Use typed `import` (not `require`) with `resolveJsonModule: true`.
 - Filter option derivation must be **dynamic** — extracted programmatically from the data, never hardcoded.
-- Server-side data functions must be `async` and return typed responses.
-- Client-side filtering/sorting works on a pre-loaded dataset (passed via props or context) to avoid re-fetching.
+- Server-side data functions are synchronous (static JSON) but must return typed responses.
+- Client-side filtering/sorting works on a pre-loaded dataset passed via props — no re-fetching.
+- **App-wide constants** (sort options, pagination limits, magic numbers) live in `lib/constants.ts`, not in utility or data files.
 
 ```ts
-// lib/data/models.ts
+// ✅ lib/data/models.ts
 import type { Model } from '@/lib/types/model';
-import modelsData from '@/public/models.json';
+import modelsJson from '@/public/models.json';
+const rawData = modelsJson as Model[];
 
 export function getAllModels(): Model[] { ... }
 export function getModelById(id: string): Model | undefined { ... }
-export function getFilterOptions(): FilterOptions { ... }  // derived dynamically
+
+// ✅ lib/constants.ts
+export const ITEMS_PER_PAGE = 24;
+export const DEFAULT_SORT = 'pulls_desc';
+export const SORT_OPTIONS = [ ... ];
 ```
 
 ---

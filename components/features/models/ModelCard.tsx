@@ -5,21 +5,23 @@ import { cn } from '@/lib/utils/cn';
 import { formatPulls, formatRam } from '@/lib/utils/format';
 import type { Model } from '@/lib/types/model';
 
+export type ModelCardModel = Pick<
+  Model,
+  | 'id'
+  | 'model_identifier'
+  | 'model_name'
+  | 'description'
+  | 'domain'
+  | 'capabilities'
+  | 'labels'
+  | 'min_ram_gb'
+  | 'pulls'
+  | 'last_updated_str'
+  | 'complexity'
+>;
+
 interface ModelCardProps {
-  model: Pick<
-    Model,
-    | 'id'
-    | 'model_identifier'
-    | 'model_name'
-    | 'description'
-    | 'domain'
-    | 'capabilities'
-    | 'labels'
-    | 'min_ram_gb'
-    | 'pulls'
-    | 'last_updated_str'
-    | 'complexity'
-  >;
+  model: ModelCardModel;
   className?: string;
 }
 
@@ -34,7 +36,9 @@ const DOMAIN_COLORS: Record<string, string> = {
 } as const;
 
 export function ModelCard({ model, className }: ModelCardProps) {
-  const paramLabels = model.labels.filter((l) => !isNaN(parseFloat(l))).slice(0, 5);
+  const numericLabels = model.labels.filter((l) => !isNaN(parseFloat(l)));
+  const paramLabels = numericLabels.slice(0, 5);
+  const extraCount = numericLabels.length - 5;
 
   return (
     <article
@@ -79,9 +83,9 @@ export function ModelCard({ model, className }: ModelCardProps) {
               {l}
             </Badge>
           ))}
-          {model.labels.filter((l) => !isNaN(parseFloat(l))).length > 5 && (
+          {extraCount > 0 && (
             <Badge variant="muted" size="sm">
-              +{model.labels.filter((l) => !isNaN(parseFloat(l))).length - 5}
+              +{extraCount}
             </Badge>
           )}
         </div>

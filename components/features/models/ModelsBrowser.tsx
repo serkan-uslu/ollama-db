@@ -3,13 +3,12 @@
 import { useMemo } from 'react';
 import { ModelFilters } from './ModelFilters';
 import { ModelGrid } from './ModelGrid';
-import { SearchInput } from '@/components/ui/molecules/SearchInput';
-import { BrowseLayout } from '@/components/templates/BrowseLayout';
-import { useFilters } from '@/lib/hooks/useFilters';
-import { useDebounce } from '@/lib/hooks/useDebounce';
-import { filterAndSortModels } from '@/lib/data/models';
-import type { Model } from '@/lib/types/model';
-import type { FilterOptions } from '@/lib/types/filter';
+import { SearchInput } from '@/components/ui/molecules';
+import { BrowseLayout } from '@/components/templates';
+import { useFilters, useDebounce } from '@/lib/hooks';
+import { filterAndSortModels } from '@/lib/data';
+import type { Model } from '@/lib/types';
+import type { FilterOptions } from '@/lib/types';
 
 interface ModelsBrowserProps {
   allModels: Model[];

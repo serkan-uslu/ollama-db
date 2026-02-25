@@ -32,5 +32,8 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "lint-staged": "{\"*.{ts,tsx}\":[\"prettier --write\",\"eslint --fix\"]}"
+  "lint-staged": {
+    "*.{ts,tsx}": ["prettier --write", "eslint --fix"],
+    "*.{css,json,md}": ["prettier --write"]
+  }
 }

@@ -1,7 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { getModelById } from '@/lib/data/models';
 
-export const runtime = 'edge';
 export const alt = 'Model detail';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';

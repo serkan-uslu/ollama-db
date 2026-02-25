@@ -1,26 +1,104 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
+/* ─── Design Tokens — Light Mode ─────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f9f9f9;
+  --color-bg-muted: #f3f3f3;
+  --color-border: #e5e5e5;
+  --color-border-strong: #d4d4d4;
+  --color-text: #0a0a0a;
+  --color-text-muted: #525252;
+  --color-text-subtle: #a3a3a3;
+  --color-accent: #0a0a0a;
+  --color-accent-hover: #262626;
+  --color-on-accent: #ffffff;
+
+  /* Typography */
+  --font-sans: var(--font-geist-sans), 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), 'JetBrains Mono', monospace;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+  /* Motion */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
 }
 
+/* ─── Design Tokens — Dark Mode ──────────────────────────────── */
+.dark {
+  --color-bg: #0a0a0a;
+  --color-bg-subtle: #111111;
+  --color-bg-muted: #1a1a1a;
+  --color-border: #262626;
+  --color-border-strong: #404040;
+  --color-text: #fafafa;
+  --color-text-muted: #a3a3a3;
+  --color-text-subtle: #525252;
+  --color-accent: #fafafa;
+  --color-accent-hover: #e5e5e5;
+  --color-on-accent: #0a0a0a;
+}
+
+/* ─── Tailwind theme bridge ───────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Base styles ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color var(--transition-normal),
+    color var(--transition-normal);
+}
+
+/* ─── Focus ring ──────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-subtle);
 }

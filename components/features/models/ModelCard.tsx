@@ -48,16 +48,23 @@ export function ModelCard({ model, className }: ModelCardProps) {
   return (
     <article
       className={cn(
-        'group flex flex-col gap-4 p-5 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-md)] transition-all duration-200',
+        'group relative flex flex-col gap-4 p-5 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-sm)] hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-md)] transition-all duration-200',
         className,
       )}
     >
+      {/* Full-card clickable overlay — sits below interactive children */}
+      <Link
+        href={`/models/${model.id}`}
+        className="absolute inset-0 rounded-[var(--radius-lg)]"
+        aria-label={`View details for ${model.model_name}`}
+        tabIndex={-1}
+      />
       {/* Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1 min-w-0">
           <Link
             href={`/models/${model.id}`}
-            className="text-sm font-semibold text-[var(--color-text)] hover:underline underline-offset-2 truncate"
+            className="text-sm font-semibold text-[var(--color-text)] hover:underline underline-offset-2 truncate relative z-10"
           >
             {model.model_name}
           </Link>
@@ -125,7 +132,7 @@ export function ModelCard({ model, className }: ModelCardProps) {
             </span>
           )}
         </div>
-        <CopyCommand command={`ollama run ${model.model_identifier}`} />
+        <CopyCommand command={`ollama run ${model.model_identifier}`} className="relative z-10" />
       </div>
     </article>
   );

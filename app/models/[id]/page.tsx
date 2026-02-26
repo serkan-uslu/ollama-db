@@ -191,7 +191,7 @@ export default async function ModelDetailPage({ params }: PageProps) {
               <div className="overflow-x-auto -mx-4 sm:mx-0">
                 <table className="min-w-full text-xs border-collapse">
                   <thead>
-                    <tr className="border-b border-[var(--color-border)]">
+                    <tr className="border-b border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
                       {['Tag', 'Size', 'Quantization', 'Context', 'Min RAM'].map((h) => (
                         <th
                           key={h}
@@ -292,7 +292,7 @@ export default async function ModelDetailPage({ params }: PageProps) {
                       <Link
                         key={rel.id}
                         href={`/models/${rel.id}`}
-                        className="group flex flex-col gap-1.5 p-3.5 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-bg)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-bg-subtle)] transition-all"
+                        className="group flex flex-col gap-1.5 p-3.5 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-bg-subtle)] shadow-[var(--shadow-sm)] hover:border-[var(--color-border-strong)] hover:bg-[var(--color-bg-muted)] transition-all"
                       >
                         <div className="flex items-center justify-between gap-2">
                           <span className="text-xs font-semibold text-[var(--color-text)] group-hover:underline underline-offset-2">
@@ -351,7 +351,7 @@ export default async function ModelDetailPage({ params }: PageProps) {
             <Divider />
 
             {/* Best for */}
-            <div className="rounded-[var(--radius-md)] bg-[var(--color-bg-subtle)] border border-[var(--color-border)] p-4">
+            <div className="rounded-[var(--radius-md)] bg-[var(--color-bg-muted)] border border-[var(--color-border-strong)] p-4">
               <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide mb-2">
                 Best for
               </p>

@@ -1,4 +1,5 @@
 import type { Capability, Complexity, Domain, SpeedTier, Model } from '@/lib/types/model';
+import { normalizeCreatorOrg } from '@/lib/utils/normalize';
 import type {
   FilterOptions,
   ParamSizeBucket,
@@ -52,7 +53,7 @@ export function deriveFilterOptions(models: Model[]): FilterOptions {
     ).sort() as SpeedTier[],
     modelFamilies: unique(models.map((m) => m.model_family).filter((f): f is string => !!f)).sort(),
     creatorOrgs: unique(
-      models.map((m) => m.creator_org).filter((c): c is string => !!c && c !== 'null'),
+      models.map((m) => normalizeCreatorOrg(m.creator_org)).filter((c): c is string => !!c),
     ).sort(),
     applications: unique(models.flatMap((m) => (m.applications ?? []).map((a) => a.name))).sort(),
     paramSizeBuckets: deriveParamSizeBuckets(models),

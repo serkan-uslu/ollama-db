@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     description: 'Browse, search and filter 200+ open-source AI models available via Ollama.',
     images: [
       {
-        url: '/og-image.png',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'Ollama Model Explorer',
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Ollama Model Explorer',
     description: 'Browse, search and filter 200+ open-source AI models available via Ollama.',
-    images: ['/og-image.png'],
+    images: ['/opengraph-image'],
     creator: '@serkanuslu',
   },
   robots: {

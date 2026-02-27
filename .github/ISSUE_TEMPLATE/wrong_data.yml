@@ -1,0 +1,70 @@
+name: 📊 Wrong Model Data
+description: A model's metadata (domain, capabilities, RAM, etc.) is incorrect or outdated.
+labels: ["data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Model metadata is automatically enriched and may contain errors. Help us fix it!
+
+  - type: input
+    id: model
+    attributes:
+      label: Model name
+      placeholder: "e.g. llama3.1"
+    validations:
+      required: true
+
+  - type: input
+    id: model_url
+    attributes:
+      label: Model page URL
+      placeholder: "e.g. https://ollama-explorer.vercel.app/models/abc-123"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: field
+    attributes:
+      label: Which field is wrong?
+      options:
+        - Domain
+        - Capabilities
+        - Complexity
+        - Min RAM
+        - Context window
+        - Use cases
+        - Languages
+        - Speed tier
+        - Model family
+        - Creator
+        - Description
+        - Parameter sizes
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current (wrong) value
+      placeholder: "What does the site currently show?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct
+    attributes:
+      label: Correct value
+      placeholder: "What should it show instead?"
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Link to the official Ollama page or documentation that confirms the correct value.
+      placeholder: "https://ollama.com/library/..."
+    validations:
+      required: false

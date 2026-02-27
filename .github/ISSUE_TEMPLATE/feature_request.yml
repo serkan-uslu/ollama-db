@@ -1,0 +1,27 @@
+name: 💡 Feature Request
+description: Suggest a new feature or improvement.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      placeholder: "e.g. I can't filter models by license type, which makes it hard to find commercially-usable models..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      placeholder: "Describe what you'd like to see..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      placeholder: "Any other approaches you've thought about?"
+    validations:
+      required: false

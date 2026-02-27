@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussion / Question
+    url: https://github.com/serkan-uslu/ollama-explorer/discussions
+    about: General questions, ideas and community discussion.

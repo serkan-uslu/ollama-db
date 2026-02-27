@@ -6,6 +6,8 @@ import { getModelById } from '@/lib/data/models';
 import { Badge } from '@/components/ui/atoms/Badge';
 import { Button } from '@/components/ui/atoms/Button';
 import { formatPulls, formatRam, formatContextWindow } from '@/lib/utils/format';
+import { normalizeCreatorOrg } from '@/lib/utils/normalize';
+import { getDomainAccent } from '@/lib/utils/domain';
 import type { Model } from '@/lib/types';
 
 export const metadata: Metadata = {
@@ -34,12 +36,25 @@ function maxCtx(m: Model): number {
 const ROWS: Row[] = [
   {
     label: 'Domain',
-    render: (m) => <Badge variant="default">{m.domain}</Badge>,
+    render: (m) => (
+      <Badge
+        variant="default"
+        style={{
+          background: getDomainAccent(m.domain),
+          color: '#fff',
+          borderColor: getDomainAccent(m.domain),
+        }}
+      >
+        {m.domain}
+      </Badge>
+    ),
   },
   {
     label: 'Creator',
     render: (m) => (
-      <span className="text-sm text-(--color-text-muted)">{m.creator_org ?? '—'}</span>
+      <span className="text-sm text-(--color-text-muted)">
+        {normalizeCreatorOrg(m.creator_org) ?? '—'}
+      </span>
     ),
   },
   {

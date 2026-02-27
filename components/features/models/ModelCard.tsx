@@ -4,6 +4,8 @@ import { CopyCommand } from '@/components/ui/molecules/CopyCommand';
 import { CompareToggle } from '@/components/ui/atoms/CompareToggle';
 import { cn } from '@/lib/utils/cn';
 import { formatPulls, formatRam, formatContextWindow } from '@/lib/utils/format';
+import { normalizeCreatorOrg } from '@/lib/utils/normalize';
+import { getDomainAccent } from '@/lib/utils/domain';
 import type { Model } from '@/lib/types/model';
 
 export type ModelCardModel = Pick<
@@ -23,6 +25,8 @@ export type ModelCardModel = Pick<
   | 'pulls'
   | 'last_updated_str'
   | 'complexity'
+  | 'creator_org'
+  | 'model_family'
 >;
 
 interface ModelCardProps {
@@ -48,11 +52,13 @@ export function ModelCard({ model, className }: ModelCardProps) {
   const paramLabels = rawParams.slice(0, 5);
   const extraCount = rawParams.length - 5;
   const ctx = model.context_window ?? 0;
+  const accentColor = getDomainAccent(model.domain);
+  const creatorDisplay = normalizeCreatorOrg(model.creator_org);
 
   return (
     <article
       className={cn(
-        'group relative flex flex-col gap-4 p-5 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] shadow-[var(--shadow-sm)] hover:border-[var(--color-border-strong)] hover:shadow-[var(--shadow-md)] transition-all duration-200',
+        'group relative flex flex-col gap-4 p-5 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] shadow-[0_2px_8px_0_rgb(0_0_0/0.08)] hover:border-[var(--color-border-strong)] hover:shadow-[0_4px_16px_0_rgb(0_0_0/0.12)] transition-all duration-200',
         className,
       )}
     >
@@ -66,12 +72,18 @@ export function ModelCard({ model, className }: ModelCardProps) {
       {/* Header */}
       <div className="flex items-end justify-between gap-3">
         <div className="flex flex-col gap-1 min-w-0">
-          <Link
-            href={`/models/${model.id}`}
-            className="text-sm font-semibold text-[var(--color-text)] hover:underline underline-offset-2 truncate relative z-10"
-          >
-            {model.model_name}
-          </Link>
+          <div className="flex items-center gap-1.5">
+            <span
+              className="inline-block w-2 h-2 rounded-full shrink-0"
+              style={{ background: accentColor }}
+            />
+            <Link
+              href={`/models/${model.id}`}
+              className="text-sm font-semibold text-[var(--color-text)] hover:underline underline-offset-2 truncate relative z-10"
+            >
+              {model.model_name}
+            </Link>
+          </div>
           <Badge
             variant={(DOMAIN_COLORS[model.domain] as 'default' | 'outline' | 'muted') ?? 'default'}
           >
@@ -122,7 +134,7 @@ export function ModelCard({ model, className }: ModelCardProps) {
       )}
 
       {/* Footer */}
-      <div className="flex flex-col gap-2 pt-1 border-t border-[var(--color-border)]">
+      <div className="flex flex-col gap-2 pt-3 pb-3 mt-auto border-t border-[var(--color-border)] -mx-5 px-5 rounded-b-[var(--radius-lg)] bg-[var(--color-bg-subtle)]">
         <div className="flex items-center gap-3 text-xs text-[var(--color-text-subtle)]">
           <span>
             Min RAM:{' '}
@@ -146,6 +158,13 @@ export function ModelCard({ model, className }: ModelCardProps) {
             </span>
           )}
         </div>
+        {(creatorDisplay || model.model_family) && (
+          <div className="flex items-center gap-1.5 text-[11px] text-[var(--color-text-subtle)]">
+            {creatorDisplay && <span className="truncate">{creatorDisplay}</span>}
+            {creatorDisplay && model.model_family && <span aria-hidden>·</span>}
+            {model.model_family && <span className="truncate">{model.model_family}</span>}
+          </div>
+        )}
         <CopyCommand command={`ollama run ${model.model_identifier}`} className="relative z-10" />
       </div>
     </article>

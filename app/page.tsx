@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { StatCard } from '@/components/ui/molecules/StatCard';
 import { Button } from '@/components/ui/atoms/Button';
@@ -9,6 +8,7 @@ import { formatPulls, formatRam } from '@/lib/utils/format';
 import { deriveFilterOptions } from '@/lib/data/filters';
 import { ModelOfTheDay } from '@/components/features/models/ModelOfTheDay';
 import { UseCaseShowcase } from '@/components/features/models/UseCaseShowcase';
+import { OlliVideo } from '@/components/features/home/OlliVideo';
 
 export const dynamic = 'force-static';
 
@@ -55,16 +55,9 @@ export default function HomePage() {
       {/* Hero */}
       <section className="flex-1 flex items-center px-6 sm:px-10 lg:px-20 py-16 sm:py-12">
         <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-16">
-          {/* Image */}
+          {/* Mascot video */}
           <div className="shrink-0">
-            <Image
-              src="/olli.jpg"
-              alt="Olli — the Ollama Explorer mascot"
-              width={320}
-              height={320}
-              className="rounded-3xl shadow-xl select-none"
-              priority
-            />
+            <OlliVideo />
           </div>
           {/* Text */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">

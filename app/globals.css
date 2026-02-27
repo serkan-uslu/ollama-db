@@ -4,8 +4,8 @@
 :root {
   /* Colors */
   --color-bg: #ffffff;
-  --color-bg-subtle: #f4f4f5;
-  --color-bg-muted: #e9e9eb;
+  --color-bg-subtle: #f2f2f4;
+  --color-bg-muted: #e4e4e7;
   --color-border: #d1d1d6;
   --color-border-strong: #a1a1aa;
   --color-text: #09090b;
@@ -14,6 +14,7 @@
   --color-accent: #0a0a0a;
   --color-accent-hover: #262626;
   --color-on-accent: #ffffff;
+  --color-page-bg: #eaeaed;
 
   /* Typography */
   --font-sans: var(--font-geist-sans), 'Inter', system-ui, sans-serif;
@@ -38,10 +39,10 @@
 
 /* ─── Design Tokens — Dark Mode ──────────────────────────────── */
 .dark {
-  --color-bg: #0a0a0a;
-  --color-bg-subtle: #111111;
-  --color-bg-muted: #1a1a1a;
-  --color-border: #262626;
+  --color-bg: #111111;
+  --color-bg-subtle: #1a1a1a;
+  --color-bg-muted: #222222;
+  --color-border: #2e2e2e;
   --color-border-strong: #404040;
   --color-text: #fafafa;
   --color-text-muted: #a3a3a3;
@@ -49,6 +50,7 @@
   --color-accent: #fafafa;
   --color-accent-hover: #e5e5e5;
   --color-on-accent: #0a0a0a;
+  --color-page-bg: #0a0a0a;
 }
 
 /* ─── Tailwind theme bridge ───────────────────────────────────── */

@@ -10,6 +10,8 @@ import { JsonLd } from '@/components/ui/atoms/JsonLd';
 import { CopyCommand } from '@/components/ui/molecules/CopyCommand';
 import { DetailLayout } from '@/components/templates/DetailLayout';
 import { formatPulls, formatRam, formatDate, formatContextWindow } from '@/lib/utils/format';
+import { getDomainAccent } from '@/lib/utils/domain';
+import { normalizeCreatorOrg } from '@/lib/utils/normalize';
 
 export const dynamic = 'force-static';
 
@@ -67,6 +69,8 @@ export default async function ModelDetailPage({ params }: PageProps) {
 
   const strengths = model.strengths ?? [];
   const limitations = model.limitations ?? [];
+  const accentColor = getDomainAccent(model.domain);
+  const creatorDisplay = normalizeCreatorOrg(model.creator_org);
 
   // Deduplicate memory_requirements: keep first occurrence of each normalised base tag
   // e.g. "llama3.1:latest" and "latest" both normalise to "latest" — keep the full-qualified one
@@ -149,7 +153,12 @@ export default async function ModelDetailPage({ params }: PageProps) {
         header={
           <div className="flex flex-col gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="default">{model.domain}</Badge>
+              <Badge
+                variant="default"
+                style={{ background: accentColor, color: '#fff', borderColor: accentColor }}
+              >
+                {model.domain}
+              </Badge>
               <Badge variant="outline">{model.complexity}</Badge>
               {model.capabilities.map((cap) => (
                 <Badge key={cap} variant="outline">
@@ -157,9 +166,20 @@ export default async function ModelDetailPage({ params }: PageProps) {
                 </Badge>
               ))}
             </div>
-            <h1 className="text-2xl sm:text-3xl font-semibold text-[var(--color-text)] tracking-tight">
+            <h1 className="flex items-center gap-2.5 text-2xl sm:text-3xl font-semibold text-[var(--color-text)] tracking-tight">
+              <span
+                className="inline-block w-3 h-3 rounded-full shrink-0"
+                style={{ background: accentColor }}
+              />
               {model.model_name}
             </h1>
+            {(creatorDisplay || model.model_family) && (
+              <p className="flex items-center gap-1.5 text-sm text-[var(--color-text-subtle)]">
+                {creatorDisplay && <span>{creatorDisplay}</span>}
+                {creatorDisplay && model.model_family && <span aria-hidden>·</span>}
+                {model.model_family && <span>{model.model_family}</span>}
+              </p>
+            )}
             <p className="text-base text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
               {model.description}
             </p>
@@ -396,15 +416,15 @@ export default async function ModelDetailPage({ params }: PageProps) {
         sidebar={
           <div className="flex flex-col gap-5">
             {/* Creator / Family info */}
-            {(model.creator_org || model.model_family) && (
+            {(creatorDisplay || model.model_family) && (
               <>
                 <div className="flex flex-col gap-2">
-                  {model.creator_org && (
+                  {creatorDisplay && (
                     <div>
                       <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide mb-1">
                         Creator
                       </p>
-                      <p className="text-sm text-[var(--color-text-muted)]">{model.creator_org}</p>
+                      <p className="text-sm text-[var(--color-text-muted)]">{creatorDisplay}</p>
                     </div>
                   )}
                   {model.model_family && (

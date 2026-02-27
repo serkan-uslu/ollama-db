@@ -1,6 +1,7 @@
 import Fuse from 'fuse.js';
 import type { Model, SortOption } from '@/lib/types/model';
 import type { ActiveFilters } from '@/lib/types/filter';
+import { normalizeCreatorOrg } from '@/lib/utils/normalize';
 import modelsJson from '@/public/models.json';
 
 const rawData = modelsJson as Model[];
@@ -129,7 +130,9 @@ export function filterAndSortModels(filters: ActiveFilters): Model[] {
   }
 
   if (filters.creatorOrgs && filters.creatorOrgs.length > 0) {
-    results = results.filter((m) => m.creator_org && filters.creatorOrgs.includes(m.creator_org));
+    results = results.filter((m) =>
+      filters.creatorOrgs.includes(normalizeCreatorOrg(m.creator_org) ?? ''),
+    );
   }
 
   if (filters.applications && filters.applications.length > 0) {

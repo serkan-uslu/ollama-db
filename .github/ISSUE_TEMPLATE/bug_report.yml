@@ -1,0 +1,53 @@
+name: 🐛 Bug Report
+description: Something is broken or behaving unexpectedly.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please fill in as much detail as you can.
+
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: Which page were you on when the bug occurred?
+      placeholder: "e.g. https://ollama-explorer.vercel.app/models/abc-123"
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the bug.
+      placeholder: "Describe what went wrong..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      placeholder: "Describe what you expected to happen..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: false
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser / OS
+      placeholder: "e.g. Chrome 122 on macOS 14"
+    validations:
+      required: false

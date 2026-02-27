@@ -28,7 +28,7 @@ export function Footer() {
         </p>
         <div className="flex items-center gap-4">
           <Link
-            href="https://github.com/serkan-uslu/ollama-explorer/issues/new"
+            href="https://github.com/serkan-uslu/ollama-explorer/issues/new?assignees=&labels=bug&template=bug_report.yml"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-[var(--color-text-subtle)] hover:text-[var(--color-text-muted)] transition-colors"

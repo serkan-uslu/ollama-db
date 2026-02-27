@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { Header, Footer } from '@/components/features/layout';
+import { CompareWrapper } from '@/components/features/compare/CompareWrapper';
 import './globals.css';
 
 const geistSans = Geist({
@@ -98,9 +99,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
-        <Analytics />
+        <CompareWrapper>
+          <div className="flex-1">{children}</div>
+          <Footer />
+          <Analytics />
+        </CompareWrapper>
       </body>
     </html>
   );

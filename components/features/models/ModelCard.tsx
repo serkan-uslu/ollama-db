@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Badge } from '@/components/ui/atoms/Badge';
 import { CopyCommand } from '@/components/ui/molecules/CopyCommand';
+import { CompareToggle } from '@/components/ui/atoms/CompareToggle';
 import { cn } from '@/lib/utils/cn';
 import { formatPulls, formatRam, formatContextWindow } from '@/lib/utils/format';
 import type { Model } from '@/lib/types/model';
@@ -60,7 +61,7 @@ export function ModelCard({ model, className }: ModelCardProps) {
         tabIndex={-1}
       />
       {/* Header */}
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex items-end justify-between gap-3">
         <div className="flex flex-col gap-1 min-w-0">
           <Link
             href={`/models/${model.id}`}
@@ -74,11 +75,14 @@ export function ModelCard({ model, className }: ModelCardProps) {
             {model.domain}
           </Badge>
         </div>
-        <div className="flex flex-col items-end gap-1 shrink-0 text-xs text-[var(--color-text-subtle)]">
-          <span className="font-medium text-[var(--color-text-muted)]">
-            {formatPulls(model.pulls)} pulls
-          </span>
-          <span>{model.last_updated_str}</span>
+        <div className="flex flex-col items-end gap-2 shrink-0 relative z-10">
+          <CompareToggle modelId={model.id} modelName={model.model_name} />
+          <div className="flex flex-col items-end gap-1 text-xs text-[var(--color-text-subtle)]">
+            <span className="font-medium text-[var(--color-text-muted)]">
+              {formatPulls(model.pulls)} pulls
+            </span>
+            <span>{model.last_updated_str}</span>
+          </div>
         </div>
       </div>
 

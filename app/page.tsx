@@ -53,7 +53,7 @@ export default function HomePage() {
     <main id="main" className="flex-1 flex flex-col">
       <JsonLd data={websiteSchema} />
       {/* Hero */}
-      <section className="flex-1 flex items-center px-6 sm:px-10 lg:px-20 py-16 sm:py-24">
+      <section className="flex-1 flex items-center px-6 sm:px-10 lg:px-20 py-16 sm:py-12">
         <div className="w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-16">
           {/* Image */}
           <div className="shrink-0">
@@ -68,14 +68,14 @@ export default function HomePage() {
           </div>
           {/* Text */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[var(--color-text)] leading-tight">
-              Find the right AI model,
-              <br />
-              <span className="text-[var(--color-text-muted)]">without the guesswork.</span>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[var(--color-text)] leading-tight text-balance">
+              Discover open-source <br />
+              AI models, built for Ollama.
             </h1>
             <p className="mt-4 text-base sm:text-lg text-[var(--color-text-muted)] max-w-md leading-relaxed">
-              Ollama has {models.length}+ open-source models — but discovering which one fits your
-              use case, hardware, or language is hard. Ollama Explorer makes it easy.
+              Ollama&rsquo;s infrastructure gives you {models.length}+ open-source models to run
+              locally — but finding the one that fits your use case, hardware, or language is hard.
+              Ollama Explorer makes that search instant.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Link href="/models">

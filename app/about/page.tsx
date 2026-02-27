@@ -52,9 +52,10 @@ export default function AboutPage() {
           >
             Ollama
           </a>{' '}
-          lets you run large language models locally with a single command — but its library lists
-          200+ models with minimal filtering. Figuring out which model fits your hardware, use case,
-          or language takes time you shouldn’t have to spend.
+          provides the infrastructure to run open-source large language models locally with a single
+          command. Its library lists 200+ models — but with minimal filtering, discovering which
+          open-source model fits your hardware, use case, or language takes time you shouldn&rsquo;t
+          have to spend.
         </p>
         <p className="text-base text-[var(--color-text-muted)] leading-relaxed">
           Ollama Explorer solves this. Every model is enriched with structured metadata: capability

@@ -20,12 +20,28 @@
 
 <table>
 <tr>
-<td width="220">
-  <img src="public/olli.jpg" alt="Olli — Ollama Explorer mascot" width="200" style="border-radius: 16px;" />
+<td width="240">
+  <img src="public/olli.jpg" alt="Olli — Ollama Explorer mascot" width="220" style="border-radius: 16px;" />
 </td>
 <td>
 
-A fast, minimal directory for browsing **214 open-source AI models** available via [Ollama](https://ollama.com). Built with Next.js App Router, React 19 and Tailwind CSS v4.
+### 🤖 Find the Perfect AI Model in Seconds
+
+Browse, filter and compare **214+ open-source AI models** from [Ollama](https://ollama.com) with advanced search, multi-dimensional filtering, and side-by-side comparison.
+
+**⚡ Built for speed:**
+
+- Next.js 16 (App Router) + React 19
+- Fully statically generated — zero JS on load
+- Atomic Design architecture
+
+**🎯 Key features:**
+
+- Filter by RAM, domain, language, use-case
+- Compare up to 4 models side-by-side
+- One-click copy `ollama run` commands
+
+🌐 **[ollama-explorer.vercel.app](https://ollama-explorer.vercel.app)**
 
 </td>
 </tr>

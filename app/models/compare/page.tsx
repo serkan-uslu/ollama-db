@@ -28,13 +28,44 @@ interface Row {
 }
 
 function maxCtx(m: Model): number {
-  return Math.max(...(m.memory_requirements ?? []).map((r) => r.context_window ?? 0), 0);
+  return m.context_window ?? 0;
 }
 
 const ROWS: Row[] = [
   {
     label: 'Domain',
     render: (m) => <Badge variant="default">{m.domain}</Badge>,
+  },
+  {
+    label: 'Creator',
+    render: (m) => (
+      <span className="text-sm text-(--color-text-muted)">{m.creator_org ?? '—'}</span>
+    ),
+  },
+  {
+    label: 'Model Family',
+    render: (m) => (
+      <span className="text-sm text-(--color-text-muted)">{m.model_family ?? '—'}</span>
+    ),
+  },
+  {
+    label: 'Speed',
+    render: (m) =>
+      m.speed_tier ? (
+        <Badge variant="outline">
+          {m.speed_tier.charAt(0).toUpperCase() + m.speed_tier.slice(1)}
+        </Badge>
+      ) : (
+        <span className="text-(--color-text-subtle)">—</span>
+      ),
+  },
+  {
+    label: 'Multimodal',
+    render: (m) => (
+      <span className="text-sm font-medium text-(--color-text)">
+        {m.is_multimodal ? 'Yes' : 'No'}
+      </span>
+    ),
   },
   {
     label: 'Complexity',
@@ -66,7 +97,10 @@ const ROWS: Row[] = [
   {
     label: 'Parameters',
     render: (m) => {
-      const params = m.labels.filter((l) => !isNaN(parseFloat(l)));
+      const params =
+        m.parameter_sizes && m.parameter_sizes.length > 0
+          ? m.parameter_sizes
+          : m.labels.filter((l) => !isNaN(parseFloat(l)));
       return params.length > 0 ? (
         <div className="flex flex-wrap gap-1">
           {params.map((p) => (
@@ -130,6 +164,43 @@ const ROWS: Row[] = [
     render: (m) => (
       <p className="text-xs text-(--color-text-muted) leading-relaxed">{m.best_for ?? '—'}</p>
     ),
+  },
+  {
+    label: 'Applications',
+    render: (m) =>
+      m.applications && m.applications.length > 0 ? (
+        <div className="flex flex-col gap-1">
+          {m.applications.map((app) => (
+            <div key={app.name} className="flex items-start gap-1.5 text-xs">
+              <span className="font-medium text-(--color-text) shrink-0">{app.name}:</span>
+              <code className="text-(--color-text-subtle) font-mono break-all">
+                {app.launch_command}
+              </code>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <span className="text-(--color-text-subtle)">—</span>
+      ),
+  },
+  {
+    label: 'Benchmarks',
+    render: (m) =>
+      m.benchmark_scores && m.benchmark_scores.length > 0 ? (
+        <div className="flex flex-col gap-1">
+          {m.benchmark_scores.map((b) => (
+            <div key={b.name} className="flex items-center gap-1.5 text-xs">
+              <span className="text-(--color-text-subtle)">{b.name}:</span>
+              <span className="font-medium text-(--color-text)">
+                {b.score !== null ? b.score : '—'}
+                {b.unit ? ` ${b.unit}` : ''}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <span className="text-(--color-text-subtle)">—</span>
+      ),
   },
 ];
 

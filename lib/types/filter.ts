@@ -1,4 +1,4 @@
-import type { Capability, Complexity, Domain } from './model';
+import type { Capability, Complexity, Domain, SpeedTier } from './model';
 
 export interface ParamSizeBucket {
   label: string;
@@ -24,6 +24,10 @@ export interface FilterOptions {
   useCases: string[];
   complexities: Complexity[];
   languages: string[];
+  speedTiers: SpeedTier[];
+  modelFamilies: string[];
+  creatorOrgs: string[];
+  applications: string[];
   paramSizeBuckets: ParamSizeBucket[];
   ramBuckets: RamBucket[];
   contextWindowBuckets: ContextWindowBucket[];
@@ -36,6 +40,10 @@ export interface ActiveFilters {
   useCases: string[];
   complexities: Complexity[];
   languages: string[];
+  speedTiers: SpeedTier[];
+  modelFamilies: string[];
+  creatorOrgs: string[];
+  applications: string[];
   paramSizeBucket: string | null;
   ramBucket: string | null;
   contextWindowBucket: string | null;

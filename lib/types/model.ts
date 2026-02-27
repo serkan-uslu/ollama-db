@@ -1,8 +1,31 @@
-export type Domain = 'General' | 'Code' | 'Vision' | 'Math' | 'Medical' | 'Language' | 'Embedding';
+export type Domain =
+  | 'General'
+  | 'Code'
+  | 'Vision'
+  | 'Math'
+  | 'Medical'
+  | 'Language'
+  | 'Embedding'
+  | 'Multimodal'
+  | 'Reasoning'
+  | 'Science';
 
-export type Complexity = 'advanced' | 'intermediate';
+export type Complexity = 'advanced' | 'intermediate' | 'beginner';
 
 export type Capability = 'Tools' | 'Thinking' | 'Embedding' | 'Vision' | 'Cloud';
+
+export type SpeedTier = 'fast' | 'medium' | 'slow';
+
+export interface Application {
+  name: string;
+  launch_command: string;
+}
+
+export interface BenchmarkScore {
+  name: string;
+  score: number | null;
+  unit: string | null;
+}
 
 export interface MemoryRequirement {
   tag: string;
@@ -26,18 +49,37 @@ export interface Model {
   capabilities: Capability[];
   capability: string;
   labels: string[];
+  applications: Application[];
   memory_requirements: MemoryRequirement[];
   min_ram_gb: number;
+  context_window: number;
+  speed_tier: SpeedTier | null;
   use_cases: string[];
   domain: Domain;
   ai_languages: string[];
   complexity: Complexity;
   best_for: string;
+  model_family: string | null;
+  base_model: string | null;
+  is_fine_tuned: boolean;
+  is_uncensored: boolean;
+  is_multimodal: boolean;
+  license: string | null;
+  strengths: string[];
+  limitations: string[];
+  target_audience: string[];
+  creator_org: string | null;
+  huggingface_url: string | null;
+  benchmark_scores: BenchmarkScore[];
+  parameter_sizes: string[];
   pulls: number;
   tags: number;
   last_updated: string;
   last_updated_str: string;
   timestamp: string;
+  enrich_version: number;
+  validated: boolean;
+  validation_failed: string | null;
 }
 
 export type SortOption =

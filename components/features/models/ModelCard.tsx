@@ -17,6 +17,9 @@ export type ModelCardModel = Pick<
   | 'labels'
   | 'memory_requirements'
   | 'min_ram_gb'
+  | 'context_window'
+  | 'speed_tier'
+  | 'parameter_sizes'
   | 'pulls'
   | 'last_updated_str'
   | 'complexity'
@@ -38,13 +41,13 @@ const DOMAIN_COLORS: Record<string, string> = {
 } as const;
 
 export function ModelCard({ model, className }: ModelCardProps) {
-  const numericLabels = model.labels.filter((l) => !isNaN(parseFloat(l)));
-  const paramLabels = numericLabels.slice(0, 5);
-  const extraCount = numericLabels.length - 5;
-  const maxCtx = Math.max(
-    ...(model.memory_requirements ?? []).map((r) => r.context_window ?? 0),
-    0,
-  );
+  const rawParams =
+    model.parameter_sizes && model.parameter_sizes.length > 0
+      ? model.parameter_sizes
+      : model.labels.filter((l) => !isNaN(parseFloat(l)));
+  const paramLabels = rawParams.slice(0, 5);
+  const extraCount = rawParams.length - 5;
+  const ctx = model.context_window ?? 0;
 
   return (
     <article
@@ -127,12 +130,19 @@ export function ModelCard({ model, className }: ModelCardProps) {
               {formatRam(model.min_ram_gb)}
             </span>
           </span>
-          {maxCtx > 0 && (
+          {ctx > 0 && (
             <span>
               Ctx:{' '}
               <span className="font-medium text-[var(--color-text-muted)]">
-                {formatContextWindow(maxCtx)}
+                {formatContextWindow(ctx)}
               </span>
+            </span>
+          )}
+          {model.speed_tier && (
+            <span className="ml-auto">
+              <Badge variant="muted" size="sm">
+                {model.speed_tier}
+              </Badge>
             </span>
           )}
         </div>

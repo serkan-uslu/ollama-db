@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/atoms/Button';
 import { Divider } from '@/components/ui/atoms/Divider';
 import { cn } from '@/lib/utils/cn';
 import type { FilterOptions } from '@/lib/types/filter';
-import type { Capability, Complexity, Domain } from '@/lib/types/model';
+import type { Capability, Complexity, Domain, SpeedTier } from '@/lib/types/model';
 import type { useFilters } from '@/lib/hooks/useFilters';
 import { SORT_OPTIONS } from '@/lib/constants';
 
@@ -44,6 +44,10 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
     toggleUseCase,
     toggleComplexity,
     toggleLanguage,
+    toggleSpeedTier,
+    toggleModelFamily,
+    toggleCreatorOrg,
+    toggleApplication,
     setRamBucket,
     setParamSizeBucket,
     setContextWindowBucket,
@@ -185,6 +189,78 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
           ))}
         </div>
       </Section>
+
+      {options.speedTiers.length > 0 && (
+        <>
+          <Divider />
+          <Section title="Speed">
+            <div className="flex flex-wrap gap-1.5">
+              {options.speedTiers.map((tier) => (
+                <FilterChip
+                  key={tier}
+                  label={tier.charAt(0).toUpperCase() + tier.slice(1)}
+                  active={filters.speedTiers.includes(tier)}
+                  onToggle={() => toggleSpeedTier(tier as SpeedTier)}
+                />
+              ))}
+            </div>
+          </Section>
+        </>
+      )}
+
+      {options.modelFamilies.length > 0 && (
+        <>
+          <Divider />
+          <Section title="Model Family">
+            <div className="flex flex-wrap gap-1.5">
+              {options.modelFamilies.map((family) => (
+                <FilterChip
+                  key={family}
+                  label={family}
+                  active={filters.modelFamilies.includes(family)}
+                  onToggle={() => toggleModelFamily(family)}
+                />
+              ))}
+            </div>
+          </Section>
+        </>
+      )}
+
+      {options.creatorOrgs.length > 0 && (
+        <>
+          <Divider />
+          <Section title="Creator">
+            <div className="flex flex-wrap gap-1.5">
+              {options.creatorOrgs.map((org) => (
+                <FilterChip
+                  key={org}
+                  label={org}
+                  active={filters.creatorOrgs.includes(org)}
+                  onToggle={() => toggleCreatorOrg(org)}
+                />
+              ))}
+            </div>
+          </Section>
+        </>
+      )}
+
+      {options.applications.length > 0 && (
+        <>
+          <Divider />
+          <Section title="Application">
+            <div className="flex flex-wrap gap-1.5">
+              {options.applications.map((app) => (
+                <FilterChip
+                  key={app}
+                  label={app}
+                  active={filters.applications.includes(app)}
+                  onToggle={() => toggleApplication(app)}
+                />
+              ))}
+            </div>
+          </Section>
+        </>
+      )}
     </div>
   );
 }

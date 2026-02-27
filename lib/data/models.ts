@@ -111,11 +111,31 @@ export function filterAndSortModels(filters: ActiveFilters): Model[] {
   if (filters.contextWindowBucket) {
     const [min, max] = filters.contextWindowBucket.split('-').map(Number);
     results = results.filter((m) => {
-      const ctx = Math.max(...(m.memory_requirements ?? []).map((r) => r.context_window ?? 0), 0);
+      const ctx = m.context_window ?? 0;
       if (ctx === 0) return false;
       if (isNaN(max)) return ctx >= min;
       return ctx >= min && ctx < max;
     });
+  }
+
+  if (filters.speedTiers && filters.speedTiers.length > 0) {
+    results = results.filter((m) => m.speed_tier && filters.speedTiers.includes(m.speed_tier));
+  }
+
+  if (filters.modelFamilies && filters.modelFamilies.length > 0) {
+    results = results.filter(
+      (m) => m.model_family && filters.modelFamilies.includes(m.model_family),
+    );
+  }
+
+  if (filters.creatorOrgs && filters.creatorOrgs.length > 0) {
+    results = results.filter((m) => m.creator_org && filters.creatorOrgs.includes(m.creator_org));
+  }
+
+  if (filters.applications && filters.applications.length > 0) {
+    results = results.filter((m) =>
+      filters.applications.every((name) => (m.applications ?? []).some((a) => a.name === name)),
+    );
   }
 
   results = sortModels(results, filters.sort as SortOption);

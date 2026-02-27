@@ -3,7 +3,7 @@
 import { X } from 'lucide-react';
 import type { FilterOptions } from '@/lib/types/filter';
 import type { useFilters } from '@/lib/hooks/useFilters';
-import type { Capability, Complexity, Domain } from '@/lib/types/model';
+import type { Capability, Complexity, Domain, SpeedTier } from '@/lib/types/model';
 
 type FiltersHook = ReturnType<typeof useFilters>;
 
@@ -26,6 +26,10 @@ export function ActiveFilters({ hook, options }: ActiveFiltersProps) {
     toggleUseCase,
     toggleComplexity,
     toggleLanguage,
+    toggleSpeedTier,
+    toggleModelFamily,
+    toggleCreatorOrg,
+    toggleApplication,
     setRamBucket,
     setParamSizeBucket,
     setContextWindowBucket,
@@ -71,6 +75,38 @@ export function ActiveFilters({ hook, options }: ActiveFiltersProps) {
       key: `lang-${lang}`,
       label: lang,
       onRemove: () => toggleLanguage(lang),
+    });
+  });
+
+  filters.speedTiers.forEach((tier) => {
+    chips.push({
+      key: `speed-${tier}`,
+      label: `Speed: ${tier.charAt(0).toUpperCase() + tier.slice(1)}`,
+      onRemove: () => toggleSpeedTier(tier as SpeedTier),
+    });
+  });
+
+  filters.modelFamilies.forEach((family) => {
+    chips.push({
+      key: `family-${family}`,
+      label: `Family: ${family}`,
+      onRemove: () => toggleModelFamily(family),
+    });
+  });
+
+  filters.creatorOrgs.forEach((org) => {
+    chips.push({
+      key: `creator-${org}`,
+      label: `Creator: ${org}`,
+      onRemove: () => toggleCreatorOrg(org),
+    });
+  });
+
+  filters.applications.forEach((app) => {
+    chips.push({
+      key: `app-${app}`,
+      label: `App: ${app}`,
+      onRemove: () => toggleApplication(app),
     });
   });
 

@@ -1,4 +1,4 @@
-import type { Capability, Complexity, Domain, Model } from '@/lib/types/model';
+import type { Capability, Complexity, Domain, SpeedTier, Model } from '@/lib/types/model';
 import type {
   FilterOptions,
   ParamSizeBucket,
@@ -47,6 +47,14 @@ export function deriveFilterOptions(models: Model[]): FilterOptions {
     useCases: unique(models.flatMap((m) => m.use_cases)).sort(),
     complexities: unique(models.map((m) => m.complexity).filter(Boolean)).sort() as Complexity[],
     languages: unique(models.flatMap((m) => m.ai_languages).filter(Boolean)).sort(),
+    speedTiers: unique(
+      models.map((m) => m.speed_tier).filter((s): s is SpeedTier => s !== null),
+    ).sort() as SpeedTier[],
+    modelFamilies: unique(models.map((m) => m.model_family).filter((f): f is string => !!f)).sort(),
+    creatorOrgs: unique(
+      models.map((m) => m.creator_org).filter((c): c is string => !!c && c !== 'null'),
+    ).sort(),
+    applications: unique(models.flatMap((m) => (m.applications ?? []).map((a) => a.name))).sort(),
     paramSizeBuckets: deriveParamSizeBuckets(models),
     ramBuckets: deriveRamBuckets(models),
     contextWindowBuckets: deriveContextWindowBuckets(models),

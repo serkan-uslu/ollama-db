@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, CheckCircle2, XCircle } from 'lucide-react';
+import { ArrowLeft, ExternalLink, CheckCircle2, XCircle, Terminal } from 'lucide-react';
 import { getAllModels, getModelById, getRelatedModels } from '@/lib/data/models';
 import { Badge } from '@/components/ui/atoms/Badge';
 import { Button } from '@/components/ui/atoms/Button';
@@ -10,7 +10,6 @@ import { JsonLd } from '@/components/ui/atoms/JsonLd';
 import { CopyCommand } from '@/components/ui/molecules/CopyCommand';
 import { DetailLayout } from '@/components/templates/DetailLayout';
 import { formatPulls, formatRam, formatDate, formatContextWindow } from '@/lib/utils/format';
-import { deriveInsights } from '@/lib/utils/deriveInsights';
 
 export const dynamic = 'force-static';
 
@@ -64,8 +63,10 @@ export default async function ModelDetailPage({ params }: PageProps) {
   if (!model) notFound();
 
   const url = `https://ollama-explorer.vercel.app/models/${model.id}`;
-  const insights = deriveInsights(model);
   const related = getRelatedModels(model, 4);
+
+  const strengths = model.strengths ?? [];
+  const limitations = model.limitations ?? [];
 
   // Deduplicate memory_requirements: keep first occurrence of each normalised base tag
   // e.g. "llama3.1:latest" and "latest" both normalise to "latest" — keep the full-qualified one
@@ -76,9 +77,6 @@ export default async function ModelDetailPage({ params }: PageProps) {
     seenBaseTags.add(base);
     return true;
   });
-
-  // Max context window across all variants
-  const maxCtx = Math.max(...dedupedRequirements.map((r) => r.context_window ?? 0), 0);
 
   const softwareSchema = {
     '@context': 'https://schema.org',
@@ -169,7 +167,9 @@ export default async function ModelDetailPage({ params }: PageProps) {
               <span>{formatPulls(model.pulls)} pulls</span>
               <span>Updated {formatDate(model.last_updated)}</span>
               <span>{model.tags} tags</span>
-              {maxCtx > 0 && <span>{formatContextWindow(maxCtx)} context</span>}
+              {model.context_window > 0 && (
+                <span>{formatContextWindow(model.context_window)} context</span>
+              )}
             </div>
           </div>
         }
@@ -232,20 +232,51 @@ export default async function ModelDetailPage({ params }: PageProps) {
 
             <Divider />
 
+            {/* Applications */}
+            {model.applications && model.applications.length > 0 && (
+              <>
+                <section>
+                  <h2 className="text-sm font-semibold text-[var(--color-text)] mb-3">Run with</h2>
+                  <div className="flex flex-col gap-2">
+                    {model.applications.map((app) => (
+                      <div
+                        key={app.name}
+                        className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 p-3 rounded-[var(--radius-md)] bg-[var(--color-bg-subtle)] border border-[var(--color-border)]"
+                      >
+                        <div className="flex items-center gap-2 min-w-0 sm:w-32 shrink-0">
+                          <Terminal
+                            size={13}
+                            className="shrink-0 text-[var(--color-text-subtle)]"
+                          />
+                          <span className="text-xs font-medium text-[var(--color-text)]">
+                            {app.name}
+                          </span>
+                        </div>
+                        <code className="text-xs font-mono text-[var(--color-text-muted)] bg-[var(--color-bg-muted)] px-2 py-1 rounded truncate">
+                          {app.launch_command}
+                        </code>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+                <Divider />
+              </>
+            )}
+
             {/* Strengths & Limitations */}
-            {(insights.strengths.length > 0 || insights.limitations.length > 0) && (
+            {(strengths.length > 0 || limitations.length > 0) && (
               <section>
                 <h2 className="text-sm font-semibold text-[var(--color-text)] mb-4">
                   Strengths &amp; Limitations
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-6">
-                  {insights.strengths.length > 0 && (
+                  {strengths.length > 0 && (
                     <div className="flex flex-col gap-2.5">
                       <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide">
                         Strengths
                       </p>
                       <ul className="flex flex-col gap-2">
-                        {insights.strengths.map((s) => (
+                        {strengths.map((s) => (
                           <li
                             key={s}
                             className="flex items-start gap-2 text-xs text-[var(--color-text-muted)] leading-relaxed"
@@ -257,13 +288,13 @@ export default async function ModelDetailPage({ params }: PageProps) {
                       </ul>
                     </div>
                   )}
-                  {insights.limitations.length > 0 && (
+                  {limitations.length > 0 && (
                     <div className="flex flex-col gap-2.5">
                       <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide">
                         Limitations
                       </p>
                       <ul className="flex flex-col gap-2">
-                        {insights.limitations.map((l) => (
+                        {limitations.map((l) => (
                           <li
                             key={l}
                             className="flex items-start gap-2 text-xs text-[var(--color-text-muted)] leading-relaxed"
@@ -277,6 +308,52 @@ export default async function ModelDetailPage({ params }: PageProps) {
                   )}
                 </div>
               </section>
+            )}
+
+            {/* Benchmark Scores */}
+            {model.benchmark_scores && model.benchmark_scores.length > 0 && (
+              <>
+                <Divider />
+                <section>
+                  <h2 className="text-sm font-semibold text-[var(--color-text)] mb-3">
+                    Benchmarks
+                  </h2>
+                  <div className="overflow-x-auto -mx-4 sm:mx-0">
+                    <table className="min-w-full text-xs border-collapse">
+                      <thead>
+                        <tr className="border-b border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+                          {['Benchmark', 'Score', 'Unit'].map((h) => (
+                            <th
+                              key={h}
+                              className="text-left px-4 sm:px-3 py-2.5 font-medium text-[var(--color-text-subtle)] whitespace-nowrap first:pl-4 sm:first:pl-0"
+                            >
+                              {h}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {model.benchmark_scores.map((b) => (
+                          <tr
+                            key={b.name}
+                            className="border-b border-[var(--color-border)] hover:bg-[var(--color-bg-subtle)] transition-colors"
+                          >
+                            <td className="px-4 sm:px-3 py-2.5 font-medium text-[var(--color-text-muted)] whitespace-nowrap first:pl-4 sm:first:pl-0">
+                              {b.name}
+                            </td>
+                            <td className="px-4 sm:px-3 py-2.5 text-[var(--color-text)] tabular-nums whitespace-nowrap">
+                              {b.score !== null ? b.score : '—'}
+                            </td>
+                            <td className="px-4 sm:px-3 py-2.5 text-[var(--color-text-subtle)] whitespace-nowrap">
+                              {b.unit ?? '—'}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </section>
+              </>
             )}
 
             {/* Related models */}
@@ -318,6 +395,46 @@ export default async function ModelDetailPage({ params }: PageProps) {
         }
         sidebar={
           <div className="flex flex-col gap-5">
+            {/* Creator / Family info */}
+            {(model.creator_org || model.model_family) && (
+              <>
+                <div className="flex flex-col gap-2">
+                  {model.creator_org && (
+                    <div>
+                      <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide mb-1">
+                        Creator
+                      </p>
+                      <p className="text-sm text-[var(--color-text-muted)]">{model.creator_org}</p>
+                    </div>
+                  )}
+                  {model.model_family && (
+                    <div>
+                      <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide mb-1">
+                        Model family
+                      </p>
+                      <p className="text-sm text-[var(--color-text-muted)]">{model.model_family}</p>
+                    </div>
+                  )}
+                  {model.license && (
+                    <div>
+                      <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide mb-1">
+                        License
+                      </p>
+                      <p className="text-sm text-[var(--color-text-muted)]">{model.license}</p>
+                    </div>
+                  )}
+                </div>
+                <Divider />
+              </>
+            )}
+
+            {/* Badges */}
+            <div className="flex flex-wrap gap-1.5">
+              {model.is_multimodal && <Badge variant="default">Multimodal</Badge>}
+              {model.is_fine_tuned && <Badge variant="outline">Fine-tuned</Badge>}
+              {model.is_uncensored && <Badge variant="outline">Uncensored</Badge>}
+            </div>
+
             {/* Use cases */}
             <div>
               <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide mb-2.5">
@@ -331,6 +448,24 @@ export default async function ModelDetailPage({ params }: PageProps) {
                 ))}
               </div>
             </div>
+
+            {model.target_audience && model.target_audience.length > 0 && (
+              <>
+                <Divider />
+                <div>
+                  <p className="text-xs font-semibold text-[var(--color-text-subtle)] uppercase tracking-wide mb-2.5">
+                    Target audience
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {model.target_audience.map((t) => (
+                      <Badge key={t} variant="muted">
+                        {t}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
 
             <Divider />
 
@@ -362,16 +497,29 @@ export default async function ModelDetailPage({ params }: PageProps) {
 
             <Divider />
 
-            {/* External link */}
-            <a
-              href={model.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-            >
-              <ExternalLink size={14} />
-              View on ollama.com
-            </a>
+            {/* External links */}
+            <div className="flex flex-col gap-2">
+              <a
+                href={model.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+              >
+                <ExternalLink size={14} />
+                View on ollama.com
+              </a>
+              {model.huggingface_url && (
+                <a
+                  href={model.huggingface_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
+                >
+                  <ExternalLink size={14} />
+                  View on Hugging Face
+                </a>
+              )}
+            </div>
           </div>
         }
       />

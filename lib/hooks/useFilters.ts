@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import type { ActiveFilters } from '@/lib/types/filter';
-import type { Capability, Complexity, Domain } from '@/lib/types/model';
+import type { Capability, Complexity, Domain, SpeedTier } from '@/lib/types/model';
 import { DEFAULT_SORT } from '@/lib/constants';
 
 const INITIAL: ActiveFilters = {
@@ -12,6 +12,10 @@ const INITIAL: ActiveFilters = {
   useCases: [],
   complexities: [],
   languages: [],
+  speedTiers: [],
+  modelFamilies: [],
+  creatorOrgs: [],
+  applications: [],
   paramSizeBucket: null,
   ramBucket: null,
   contextWindowBucket: null,
@@ -70,6 +74,42 @@ export function useFilters() {
     }));
   }, []);
 
+  const toggleSpeedTier = useCallback((tier: SpeedTier) => {
+    setFilters((prev) => ({
+      ...prev,
+      speedTiers: prev.speedTiers.includes(tier)
+        ? prev.speedTiers.filter((t) => t !== tier)
+        : [...prev.speedTiers, tier],
+    }));
+  }, []);
+
+  const toggleModelFamily = useCallback((family: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      modelFamilies: prev.modelFamilies.includes(family)
+        ? prev.modelFamilies.filter((f) => f !== family)
+        : [...prev.modelFamilies, family],
+    }));
+  }, []);
+
+  const toggleCreatorOrg = useCallback((org: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      creatorOrgs: prev.creatorOrgs.includes(org)
+        ? prev.creatorOrgs.filter((o) => o !== org)
+        : [...prev.creatorOrgs, org],
+    }));
+  }, []);
+
+  const toggleApplication = useCallback((app: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      applications: prev.applications.includes(app)
+        ? prev.applications.filter((a) => a !== app)
+        : [...prev.applications, app],
+    }));
+  }, []);
+
   const setRamBucket = useCallback((bucket: string | null) => {
     setFilters((prev) => ({
       ...prev,
@@ -104,6 +144,10 @@ export function useFilters() {
       filters.useCases.length +
       filters.complexities.length +
       filters.languages.length +
+      filters.speedTiers.length +
+      filters.modelFamilies.length +
+      filters.creatorOrgs.length +
+      filters.applications.length +
       (filters.paramSizeBucket ? 1 : 0) +
       (filters.ramBucket ? 1 : 0) +
       (filters.contextWindowBucket ? 1 : 0)
@@ -119,6 +163,10 @@ export function useFilters() {
     toggleUseCase,
     toggleComplexity,
     toggleLanguage,
+    toggleSpeedTier,
+    toggleModelFamily,
+    toggleCreatorOrg,
+    toggleApplication,
     setRamBucket,
     setParamSizeBucket,
     setContextWindowBucket,

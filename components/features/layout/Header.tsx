@@ -50,6 +50,9 @@ export function Header() {
           aria-label="Ollama Explorer — home"
         >
           <span>Ollama Explorer</span>
+          <span className="px-1.5 py-0.5 text-[10px] font-medium rounded-full bg-[var(--color-accent)] text-[var(--color-on-accent)]">
+            Beta
+          </span>
         </Link>
 
         {/* Desktop nav */}

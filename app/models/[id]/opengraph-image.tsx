@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { getModelById } from '@/lib/data/models';
 
-export const alt = 'Model detail';
+export const alt = 'Ollama Model - Detail View';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -40,24 +40,61 @@ export default async function ModelOgImage({ params }: Props) {
   return new ImageResponse(
     <div
       style={{
-        background: '#09090b',
+        background: `linear-gradient(135deg, #09090b 0%, ${domainColor}11 100%)`,
         width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        fontFamily: 'sans-serif',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
         padding: '60px 72px',
+        position: 'relative',
       }}
     >
+      {/* Background pattern */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0.02,
+          backgroundImage:
+            'radial-gradient(circle at 25% 25%, #fafafa 1px, transparent 1px), radial-gradient(circle at 75% 75%, #fafafa 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      {/* Top accent line */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '4px',
+          background: `linear-gradient(90deg, ${domainColor} 0%, ${domainColor}88 100%)`,
+        }}
+      />
+
       {/* Top: site name */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <div style={{ fontSize: 28, color: '#71717a' }}>⬡</div>
-        <div style={{ fontSize: 18, color: '#52525b', fontWeight: 500 }}>Ollama Model Explorer</div>
+      <div
+        style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative', zIndex: 1 }}
+      >
+        <div style={{ fontSize: 28, color: domainColor }}>⬡</div>
+        <div style={{ fontSize: 16, color: '#71717a', fontWeight: 600, letterSpacing: '0.5px' }}>
+          OLLAMA EXPLORER
+        </div>
       </div>
 
       {/* Middle: model info */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 20,
+          position: 'relative',
+          zIndex: 1,
+        }}
+      >
         {/* Domain badge */}
         <div
           style={{
@@ -69,12 +106,15 @@ export default async function ModelOgImage({ params }: Props) {
           <div
             style={{
               background: domainColor + '22',
-              border: `1px solid ${domainColor}44`,
+              border: `1px solid ${domainColor}55`,
               borderRadius: 6,
-              padding: '4px 14px',
-              fontSize: 18,
+              padding: '6px 16px',
+              fontSize: 16,
               color: domainColor,
               fontWeight: 600,
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              boxShadow: `0 0 20px ${domainColor}33`,
             }}
           >
             {domain}
@@ -82,11 +122,12 @@ export default async function ModelOgImage({ params }: Props) {
           {pulls && (
             <div
               style={{
-                fontSize: 18,
+                fontSize: 16,
                 color: '#71717a',
+                fontWeight: 500,
               }}
             >
-              {pulls}
+              ⚡ {pulls}
             </div>
           )}
         </div>
@@ -94,11 +135,12 @@ export default async function ModelOgImage({ params }: Props) {
         {/* Model name */}
         <div
           style={{
-            fontSize: 64,
-            fontWeight: 700,
+            fontSize: 68,
+            fontWeight: 800,
             color: '#fafafa',
-            letterSpacing: '-1px',
+            letterSpacing: '-2px',
             lineHeight: 1.1,
+            textShadow: '0 2px 30px rgba(0, 0, 0, 0.5)',
           }}
         >
           {name}
@@ -110,8 +152,9 @@ export default async function ModelOgImage({ params }: Props) {
             style={{
               fontSize: 22,
               color: '#a1a1aa',
-              lineHeight: 1.55,
+              lineHeight: 1.6,
               maxWidth: 900,
+              fontWeight: 400,
             }}
           >
             {description}
@@ -126,16 +169,24 @@ export default async function ModelOgImage({ params }: Props) {
             display: 'flex',
             alignItems: 'center',
             gap: 12,
-            background: '#18181b',
-            border: '1px solid #27272a',
-            borderRadius: 10,
-            padding: '14px 22px',
-            maxWidth: 500,
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderRadius: 12,
+            padding: '16px 24px',
+            maxWidth: 600,
+            backdropFilter: 'blur(10px)',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
-          <div style={{ fontSize: 18, color: '#52525b' }}>$</div>
+          <div style={{ fontSize: 20, color: domainColor }}>$</div>
           <div
-            style={{ fontSize: 20, fontFamily: 'monospace', color: '#71717a', letterSpacing: 0 }}
+            style={{
+              fontSize: 20,
+              fontFamily: 'monospace',
+              color: '#e4e4e7',
+              letterSpacing: '0.3px',
+            }}
           >
             ollama run {model.model_identifier}
           </div>

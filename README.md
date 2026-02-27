@@ -1,5 +1,12 @@
 # Ollama Explorer
 
+[![GitHub Stars](https://img.shields.io/github/stars/serkan-uslu/ollama-explorer?style=social)](https://github.com/serkan-uslu/ollama-explorer/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/serkan-uslu/ollama-explorer?style=social)](https://github.com/serkan-uslu/ollama-explorer/network/members)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ollama-explorer.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
+
 > **Ollama has 200+ open-source AI models. Finding the right one is painful.**
 >
 > The official library shows a wall of model cards with almost no filtering. To pick the right model you end up opening dozens of tabs, reading raw descriptions, and guessing whether your machine can even run it.
@@ -152,9 +159,63 @@ All colours, radii, shadows and typography are defined as CSS custom properties 
 
 ---
 
-## License
+## 🤝 Contributing
 
-MIT
+We welcome contributions! Check out [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
+
+**Looking for help with:**
+
+- 🎨 UI/UX improvements
+- 📊 Model data enrichment (benchmarks, ratings)
+- 🌍 Internationalization (translations)
+- ⚡ Performance optimizations
+- 📝 Documentation improvements
+
+[Good First Issues](https://github.com/serkan-uslu/ollama-explorer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+
+---
+
+## 🗺 Roadmap
+
+- [ ] Model rating & review system
+- [ ] User favorites & collections
+- [ ] Advanced comparison features
+- [ ] API for model data access
+- [ ] Dark mode schedule (auto-switch)
+- [ ] More language support
+- [ ] Export comparison results
+- [ ] Model recommendations based on use case
+
+---
+
+## 💬 Support & Community
+
+- 📖 [Documentation](https://github.com/serkan-uslu/ollama-explorer/wiki)
+- 💬 [Discussions](https://github.com/serkan-uslu/ollama-explorer/discussions)
+- 🐛 [Bug Reports](https://github.com/serkan-uslu/ollama-explorer/issues?q=is%3Aissue+label%3Abug)
+- 💡 [Feature Requests](https://github.com/serkan-uslu/ollama-explorer/issues?q=is%3Aissue+label%3Aenhancement)
+
+---
+
+## 🙏 Acknowledgments
+
+- [Ollama](https://ollama.com) for the amazing AI model platform
+- All model creators and maintainers in the open-source AI community
+- Next.js team for the incredible framework
+
+---
+
+## ⭐ Star History
+
+If you find this project useful, please consider giving it a star! ⭐
+
+[![Star History Chart](https://api.star-history.com/svg?repos=serkan-uslu/ollama-explorer&type=Date)](https://star-history.com/#serkan-uslu/ollama-explorer&Date)
+
+---
+
+## 📄 License
+
+MIT &copy; [Serkan Uslu](https://github.com/serkan-uslu)
 
 ## Deploy on Vercel
 

@@ -165,7 +165,12 @@ export function ModelCard({ model, className }: ModelCardProps) {
             {model.model_family && <span className="truncate">{model.model_family}</span>}
           </div>
         )}
-        <CopyCommand command={`ollama run ${model.model_identifier}`} className="relative z-10" />
+        <CopyCommand
+          command={`ollama run ${model.model_identifier}`}
+          className="relative z-10"
+          modelName={model.model_name}
+          modelIdentifier={model.model_identifier}
+        />
       </div>
     </article>
   );

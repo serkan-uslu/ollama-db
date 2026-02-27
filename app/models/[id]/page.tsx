@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, CheckCircle2, XCircle, Terminal } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, XCircle, Terminal } from 'lucide-react';
 import { getAllModels, getModelById, getRelatedModels } from '@/lib/data/models';
 import { Badge } from '@/components/ui/atoms/Badge';
 import { Button } from '@/components/ui/atoms/Button';
@@ -9,6 +9,7 @@ import { Divider } from '@/components/ui/atoms/Divider';
 import { JsonLd } from '@/components/ui/atoms/JsonLd';
 import { CopyCommand } from '@/components/ui/molecules/CopyCommand';
 import { DetailLayout } from '@/components/templates/DetailLayout';
+import { ModelDetailActions } from '@/components/features/models/ModelDetailActions';
 import { formatPulls, formatRam, formatDate, formatContextWindow } from '@/lib/utils/format';
 import { getDomainAccent } from '@/lib/utils/domain';
 import { normalizeCreatorOrg } from '@/lib/utils/normalize';
@@ -198,7 +199,11 @@ export default async function ModelDetailPage({ params }: PageProps) {
             {/* Quick run command */}
             <section>
               <h2 className="text-sm font-semibold text-[var(--color-text)] mb-3">Quick start</h2>
-              <CopyCommand command={`ollama run ${model.model_identifier}`} />
+              <CopyCommand
+                command={`ollama run ${model.model_identifier}`}
+                modelName={model.model_name}
+                modelIdentifier={model.model_identifier}
+              />
             </section>
 
             <Divider />
@@ -517,29 +522,14 @@ export default async function ModelDetailPage({ params }: PageProps) {
 
             <Divider />
 
-            {/* External links */}
-            <div className="flex flex-col gap-2">
-              <a
-                href={model.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-              >
-                <ExternalLink size={14} />
-                View on ollama.com
-              </a>
-              {model.huggingface_url && (
-                <a
-                  href={model.huggingface_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors"
-                >
-                  <ExternalLink size={14} />
-                  View on Hugging Face
-                </a>
-              )}
-            </div>
+            {/* External links with analytics tracking */}
+            <ModelDetailActions
+              modelName={model.model_name}
+              modelId={model.id}
+              domain={model.domain}
+              ollamaUrl={model.url}
+              huggingFaceUrl={model.huggingface_url ?? undefined}
+            />
           </div>
         }
       />

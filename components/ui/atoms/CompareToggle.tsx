@@ -3,6 +3,7 @@
 import { Plus, Check } from 'lucide-react';
 import { useCompare } from '@/lib/context/CompareContext';
 import { cn } from '@/lib/utils/cn';
+import { trackCompareAdd, trackCompareRemove } from '@/lib/utils/ga';
 
 interface CompareToggleProps {
   modelId: string;
@@ -20,7 +21,16 @@ export function CompareToggle({ modelId, modelName }: CompareToggleProps) {
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!maxReached) toggle(modelId, modelName);
+        if (!maxReached) {
+          toggle(modelId, modelName);
+
+          // Track GA4 event
+          if (selected) {
+            trackCompareRemove(modelName, modelId);
+          } else {
+            trackCompareAdd(modelName, modelId);
+          }
+        }
       }}
       disabled={maxReached}
       aria-label={

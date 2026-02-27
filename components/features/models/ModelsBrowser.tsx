@@ -43,7 +43,12 @@ export function ModelsBrowser({ allModels, filterOptions }: ModelsBrowserProps) 
     <>
       <BrowseLayout
         search={
-          <SearchInput value={hook.filters.search} onChange={hook.setSearch} className="w-full" />
+          <SearchInput
+            value={hook.filters.search}
+            onChange={hook.setSearch}
+            className="w-full"
+            resultCount={results.length}
+          />
         }
         sidebar={
           <ModelFilters

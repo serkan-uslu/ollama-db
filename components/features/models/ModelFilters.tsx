@@ -6,6 +6,7 @@ import { FilterChip } from '@/components/ui/molecules/FilterChip';
 import { Button } from '@/components/ui/atoms/Button';
 import { Divider } from '@/components/ui/atoms/Divider';
 import { cn } from '@/lib/utils/cn';
+import { trackFilterApply, trackFilterRemove, trackFilterReset } from '@/lib/utils/ga';
 import type { FilterOptions } from '@/lib/types/filter';
 import type { Capability, Complexity, Domain, SpeedTier } from '@/lib/types/model';
 import type { useFilters } from '@/lib/hooks/useFilters';
@@ -55,6 +56,104 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
     setContextWindowBucket,
   } = hook;
 
+  // Wrapper functions to track filter changes
+  const handleToggleCapability = (cap: Capability) => {
+    toggleCapability(cap);
+    const isRemoving = filters.capabilities.includes(cap);
+    if (isRemoving) {
+      trackFilterRemove('capability', cap);
+    }
+  };
+
+  const handleToggleDomain = (domain: Domain) => {
+    toggleDomain(domain);
+    const isRemoving = filters.domains.includes(domain);
+    if (isRemoving) {
+      trackFilterRemove('domain', domain);
+    }
+  };
+
+  const handleToggleUseCase = (uc: string) => {
+    toggleUseCase(uc);
+    const isRemoving = filters.useCases.includes(uc);
+    if (isRemoving) {
+      trackFilterRemove('use_case', uc);
+    }
+  };
+
+  const handleToggleComplexity = (c: Complexity) => {
+    toggleComplexity(c);
+    const isRemoving = filters.complexities.includes(c);
+    if (isRemoving) {
+      trackFilterRemove('complexity', c);
+    }
+  };
+
+  const handleToggleLanguage = (lang: string) => {
+    toggleLanguage(lang);
+    const isRemoving = filters.languages.includes(lang);
+    if (isRemoving) {
+      trackFilterRemove('language', lang);
+    }
+  };
+
+  const handleToggleSpeedTier = (tier: SpeedTier) => {
+    toggleSpeedTier(tier);
+    const isRemoving = filters.speedTiers.includes(tier);
+    if (isRemoving) {
+      trackFilterRemove('speed_tier', tier);
+    }
+  };
+
+  const handleToggleModelFamily = (family: string) => {
+    toggleModelFamily(family);
+    const isRemoving = filters.modelFamilies.includes(family);
+    if (isRemoving) {
+      trackFilterRemove('model_family', family);
+    }
+  };
+
+  const handleToggleCreatorOrg = (org: string) => {
+    toggleCreatorOrg(org);
+    const isRemoving = filters.creatorOrgs.includes(org);
+    if (isRemoving) {
+      trackFilterRemove('creator_org', org);
+    }
+  };
+
+  const handleToggleApplication = (app: string) => {
+    toggleApplication(app);
+    const isRemoving = filters.applications.includes(app);
+    if (isRemoving) {
+      trackFilterRemove('application', app);
+    }
+  };
+
+  const handleToggleFineTuned = () => {
+    toggleFineTuned();
+    trackFilterRemove('fine_tuned', filters.isFineTuned ? 'true' : 'false');
+  };
+
+  const handleToggleUncensored = () => {
+    toggleUncensored();
+    trackFilterRemove('uncensored', filters.isUncensored ? 'true' : 'false');
+  };
+
+  const handleSetRamBucket = (bucket: string) => {
+    setRamBucket(bucket);
+    trackFilterApply('ram', bucket, 0);
+  };
+
+  const handleSetParamSizeBucket = (bucket: string) => {
+    setParamSizeBucket(bucket);
+    trackFilterApply('param_size', bucket, 0);
+  };
+
+  const handleSetContextWindowBucket = (bucket: string) => {
+    setContextWindowBucket(bucket);
+    trackFilterApply('context_window', bucket, 0);
+  };
+
   return (
     <div className="flex flex-col gap-5">
       {/* Capabilities */}
@@ -65,7 +164,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
               key={cap}
               label={cap}
               active={filters.capabilities.includes(cap)}
-              onToggle={() => toggleCapability(cap as Capability)}
+              onToggle={() => handleToggleCapability(cap as Capability)}
             />
           ))}
         </div>
@@ -81,7 +180,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
               key={d}
               label={d}
               active={filters.domains.includes(d)}
-              onToggle={() => toggleDomain(d as Domain)}
+              onToggle={() => handleToggleDomain(d as Domain)}
             />
           ))}
         </div>
@@ -97,7 +196,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
               key={c}
               label={c ? c.charAt(0).toUpperCase() + c.slice(1) : c}
               active={filters.complexities.includes(c)}
-              onToggle={() => toggleComplexity(c as Complexity)}
+              onToggle={() => handleToggleComplexity(c as Complexity)}
             />
           ))}
         </div>
@@ -115,7 +214,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                 key={key}
                 label={b.label}
                 active={filters.paramSizeBucket === key}
-                onToggle={() => setParamSizeBucket(key)}
+                onToggle={() => handleSetParamSizeBucket(key)}
               />
             );
           })}
@@ -134,7 +233,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                 key={key}
                 label={b.label}
                 active={filters.ramBucket === key}
-                onToggle={() => setRamBucket(key)}
+                onToggle={() => handleSetRamBucket(key)}
               />
             );
           })}
@@ -153,7 +252,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                 key={key}
                 label={b.label}
                 active={filters.contextWindowBucket === key}
-                onToggle={() => setContextWindowBucket(key)}
+                onToggle={() => handleSetContextWindowBucket(key)}
               />
             );
           })}
@@ -170,7 +269,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
               key={uc}
               label={uc}
               active={filters.useCases.includes(uc)}
-              onToggle={() => toggleUseCase(uc)}
+              onToggle={() => handleToggleUseCase(uc)}
             />
           ))}
         </div>
@@ -186,7 +285,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
               key={lang}
               label={lang}
               active={filters.languages.includes(lang)}
-              onToggle={() => toggleLanguage(lang)}
+              onToggle={() => handleToggleLanguage(lang)}
             />
           ))}
         </div>
@@ -202,7 +301,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                   key={tier}
                   label={tier.charAt(0).toUpperCase() + tier.slice(1)}
                   active={filters.speedTiers.includes(tier)}
-                  onToggle={() => toggleSpeedTier(tier as SpeedTier)}
+                  onToggle={() => handleToggleSpeedTier(tier as SpeedTier)}
                 />
               ))}
             </div>
@@ -220,7 +319,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                   key={family}
                   label={family}
                   active={filters.modelFamilies.includes(family)}
-                  onToggle={() => toggleModelFamily(family)}
+                  onToggle={() => handleToggleModelFamily(family)}
                 />
               ))}
             </div>
@@ -238,7 +337,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                   key={org}
                   label={org}
                   active={filters.creatorOrgs.includes(org)}
-                  onToggle={() => toggleCreatorOrg(org)}
+                  onToggle={() => handleToggleCreatorOrg(org)}
                 />
               ))}
             </div>
@@ -256,7 +355,7 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
                   key={app}
                   label={app}
                   active={filters.applications.includes(app)}
-                  onToggle={() => toggleApplication(app)}
+                  onToggle={() => handleToggleApplication(app)}
                 />
               ))}
             </div>
@@ -270,12 +369,12 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
           <FilterChip
             label="Fine-tuned"
             active={filters.isFineTuned === true}
-            onToggle={toggleFineTuned}
+            onToggle={handleToggleFineTuned}
           />
           <FilterChip
             label="Uncensored"
             active={filters.isUncensored === true}
-            onToggle={toggleUncensored}
+            onToggle={handleToggleUncensored}
           />
         </div>
       </Section>
@@ -287,6 +386,11 @@ export function ModelFilters({ options, hook, totalResults, totalModels }: Model
   const [mobileOpen, setMobileOpen] = useState(false);
   const { filters, activeCount, reset, setSort } = hook;
 
+  const handleReset = () => {
+    reset();
+    trackFilterReset();
+  };
+
   return (
     <>
       {/* ── Mobile: trigger bar ── */}
@@ -297,7 +401,7 @@ export function ModelFilters({ options, hook, totalResults, totalModels }: Model
         </p>
         <div className="flex items-center gap-2">
           {activeCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={reset}>
+            <Button variant="ghost" size="sm" onClick={handleReset}>
               Reset
             </Button>
           )}
@@ -334,7 +438,7 @@ export function ModelFilters({ options, hook, totalResults, totalModels }: Model
               <FilterContent options={options} hook={hook} />
             </div>
             <div className="px-5 py-4 border-t border-[var(--color-border)] flex gap-3">
-              <Button variant="ghost" size="md" className="flex-1" onClick={reset}>
+              <Button variant="ghost" size="md" className="flex-1" onClick={handleReset}>
                 Reset all
               </Button>
               <Button
@@ -360,7 +464,7 @@ export function ModelFilters({ options, hook, totalResults, totalModels }: Model
             Filters{activeCount > 0 ? ` (${activeCount})` : ''}
           </p>
           {activeCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={reset}>
+            <Button variant="ghost" size="sm" onClick={handleReset}>
               Reset all
             </Button>
           )}

@@ -3,19 +3,27 @@
 import { Check, Copy, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils/cn';
+import { trackCopyCommand } from '@/lib/utils/ga';
 
 interface CopyCommandProps {
   command: string;
   className?: string;
+  modelName?: string;
+  modelIdentifier?: string;
 }
 
-export function CopyCommand({ command, className }: CopyCommandProps) {
+export function CopyCommand({ command, className, modelName, modelIdentifier }: CopyCommandProps) {
   const [copied, setCopied] = useState(false);
 
   function handleCopy() {
     navigator.clipboard.writeText(command).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+
+      // Track GA4 event
+      if (modelName && modelIdentifier) {
+        trackCopyCommand(modelName, modelIdentifier);
+      }
     });
   }
 

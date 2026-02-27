@@ -3,12 +3,15 @@
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/atoms/Input';
 import { cn } from '@/lib/utils/cn';
+import { trackSearch } from '@/lib/utils/ga';
+import { useEffect, useRef } from 'react';
 
 interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  resultCount?: number;
 }
 
 export function SearchInput({
@@ -16,7 +19,33 @@ export function SearchInput({
   onChange,
   placeholder = 'Search models…',
   className,
+  resultCount = 0,
 }: SearchInputProps) {
+  const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const previousValueRef = useRef<string>('');
+
+  // Debounced search tracking
+  useEffect(() => {
+    // Clear previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    // Only track if user has stopped typing for 500ms and value has changed
+    if (value && value !== previousValueRef.current) {
+      searchTimeoutRef.current = setTimeout(() => {
+        trackSearch(value, resultCount);
+        previousValueRef.current = value;
+      }, 500);
+    }
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [value, resultCount]);
+
   return (
     <div className={cn('relative flex items-center w-full', className)}>
       <Search

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Header, Footer } from '@/components/features/layout';
 import { CompareWrapper } from '@/components/features/compare/CompareWrapper';
 import './globals.css';
@@ -104,6 +105,7 @@ export default function RootLayout({
           <Footer />
           <Analytics />
         </CompareWrapper>
+        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
       </body>
     </html>
   );

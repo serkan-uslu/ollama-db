@@ -30,6 +30,8 @@ export function ActiveFilters({ hook, options }: ActiveFiltersProps) {
     toggleModelFamily,
     toggleCreatorOrg,
     toggleApplication,
+    toggleFineTuned,
+    toggleUncensored,
     setRamBucket,
     setParamSizeBucket,
     setContextWindowBucket,
@@ -109,6 +111,22 @@ export function ActiveFilters({ hook, options }: ActiveFiltersProps) {
       onRemove: () => toggleApplication(app),
     });
   });
+
+  if (filters.isFineTuned === true) {
+    chips.push({
+      key: 'fine-tuned',
+      label: 'Fine-tuned',
+      onRemove: () => toggleFineTuned(),
+    });
+  }
+
+  if (filters.isUncensored === true) {
+    chips.push({
+      key: 'uncensored',
+      label: 'Uncensored',
+      onRemove: () => toggleUncensored(),
+    });
+  }
 
   if (filters.paramSizeBucket) {
     const bucket = options.paramSizeBuckets.find(

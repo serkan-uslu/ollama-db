@@ -16,6 +16,8 @@ const INITIAL: ActiveFilters = {
   modelFamilies: [],
   creatorOrgs: [],
   applications: [],
+  isFineTuned: null,
+  isUncensored: null,
   paramSizeBucket: null,
   ramBucket: null,
   contextWindowBucket: null,
@@ -110,6 +112,14 @@ export function useFilters() {
     }));
   }, []);
 
+  const toggleFineTuned = useCallback(() => {
+    setFilters((prev) => ({ ...prev, isFineTuned: prev.isFineTuned === true ? null : true }));
+  }, []);
+
+  const toggleUncensored = useCallback(() => {
+    setFilters((prev) => ({ ...prev, isUncensored: prev.isUncensored === true ? null : true }));
+  }, []);
+
   const setRamBucket = useCallback((bucket: string | null) => {
     setFilters((prev) => ({
       ...prev,
@@ -148,6 +158,8 @@ export function useFilters() {
       filters.modelFamilies.length +
       filters.creatorOrgs.length +
       filters.applications.length +
+      (filters.isFineTuned === true ? 1 : 0) +
+      (filters.isUncensored === true ? 1 : 0) +
       (filters.paramSizeBucket ? 1 : 0) +
       (filters.ramBucket ? 1 : 0) +
       (filters.contextWindowBucket ? 1 : 0)
@@ -167,6 +179,8 @@ export function useFilters() {
     toggleModelFamily,
     toggleCreatorOrg,
     toggleApplication,
+    toggleFineTuned,
+    toggleUncensored,
     setRamBucket,
     setParamSizeBucket,
     setContextWindowBucket,

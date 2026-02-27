@@ -48,6 +48,8 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
     toggleModelFamily,
     toggleCreatorOrg,
     toggleApplication,
+    toggleFineTuned,
+    toggleUncensored,
     setRamBucket,
     setParamSizeBucket,
     setContextWindowBucket,
@@ -261,6 +263,22 @@ function FilterContent({ options, hook }: { options: FilterOptions; hook: Filter
           </Section>
         </>
       )}
+
+      <Divider />
+      <Section title="Model Traits">
+        <div className="flex flex-wrap gap-1.5">
+          <FilterChip
+            label="Fine-tuned"
+            active={filters.isFineTuned === true}
+            onToggle={toggleFineTuned}
+          />
+          <FilterChip
+            label="Uncensored"
+            active={filters.isUncensored === true}
+            onToggle={toggleUncensored}
+          />
+        </div>
+      </Section>
     </div>
   );
 }

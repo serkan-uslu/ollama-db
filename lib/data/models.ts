@@ -138,6 +138,14 @@ export function filterAndSortModels(filters: ActiveFilters): Model[] {
     );
   }
 
+  if (filters.isFineTuned === true) {
+    results = results.filter((m) => m.is_fine_tuned === true);
+  }
+
+  if (filters.isUncensored === true) {
+    results = results.filter((m) => m.is_uncensored === true);
+  }
+
   results = sortModels(results, filters.sort as SortOption);
   return results;
 }

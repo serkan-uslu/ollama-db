@@ -1,5 +1,16 @@
 # Ollama Explorer
 
+> **Ollama has 200+ open-source AI models. Finding the right one is painful.**
+>
+> The official library shows a wall of model cards with almost no filtering. To pick the right model you end up opening dozens of tabs, reading raw descriptions, and guessing whether your machine can even run it.
+>
+> **Ollama Explorer fixes this.** It's a fast, searchable directory where every model is enriched with structured metadata: RAM requirements, context window size, speed tier, parameter sizes, domain, capabilities, supported languages, strengths, limitations, and benchmark scores. Filter across all dimensions at once, compare models side by side, and get to the right model in seconds — not hours.
+
+🌐 **Live** → [ollama-explorer.vercel.app](https://ollama-explorer.vercel.app)  
+📦 **Source** → [github.com/serkan-uslu/ollama-explorer](https://github.com/serkan-uslu/ollama-explorer)
+
+---
+
 <table>
 <tr>
 <td width="220">
@@ -8,13 +19,6 @@
 <td>
 
 A fast, minimal directory for browsing **214 open-source AI models** available via [Ollama](https://ollama.com). Built with Next.js App Router, React 19 and Tailwind CSS v4.
-
-> Ollama lets you run LLMs locally with a single command — but its library lists 200+ models with minimal filtering. Finding the right one for your hardware, use case, or language requires jumping between model pages and reading through descriptions manually.
->
-> **Ollama Explorer solves this.** Every model is enriched with structured metadata — capability tags, domain classification, RAM requirements, context window sizes, parameter size buckets and language support. Filter across all dimensions at once, use fuzzy search with typo tolerance, and get to the right model in seconds.
-
-🌐 **Live** → [ollama-explorer.vercel.app](https://ollama-explorer.vercel.app)  
-📦 **Source** → [github.com/serkan-uslu/ollama-explorer](https://github.com/serkan-uslu/ollama-explorer)
 
 </td>
 </tr>

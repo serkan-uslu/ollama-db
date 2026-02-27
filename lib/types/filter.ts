@@ -44,6 +44,8 @@ export interface ActiveFilters {
   modelFamilies: string[];
   creatorOrgs: string[];
   applications: string[];
+  isFineTuned: boolean | null;
+  isUncensored: boolean | null;
   paramSizeBucket: string | null;
   ramBucket: string | null;
   contextWindowBucket: string | null;

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Github } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeToggle } from './ThemeToggle';
 import { Divider } from '@/components/ui/atoms/Divider';
 import { cn } from '@/lib/utils/cn';
@@ -14,9 +14,25 @@ const NAV_LINKS = [
   { href: '/about', label: 'About' },
 ];
 
+const MODELS_VISITED_KEY = 'models-visited';
+
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [showPulse, setShowPulse] = useState(() => {
+    // Check if user has visited models page before during initialization
+    if (typeof window !== 'undefined') {
+      const hasVisitedModels = localStorage.getItem(MODELS_VISITED_KEY);
+      return !hasVisitedModels;
+    }
+    return false;
+  });
+
+  // Handle models link click
+  function handleModelsClick() {
+    localStorage.setItem(MODELS_VISITED_KEY, 'true');
+    setShowPulse(false);
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[var(--color-bg)] border-b border-[var(--color-border)]">
@@ -38,20 +54,33 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                'px-3 h-9 flex items-center text-sm rounded-[var(--radius-md)] transition-colors',
-                pathname === link.href
-                  ? 'text-[var(--color-text)] font-medium bg-[var(--color-bg-muted)]'
-                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]',
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isModels = link.href === '/models';
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={isModels ? handleModelsClick : undefined}
+                className={cn(
+                  'px-3 h-9 flex items-center text-sm rounded-[var(--radius-md)] transition-colors relative',
+                  pathname === link.href
+                    ? 'text-[var(--color-text)] font-medium bg-[var(--color-bg-muted)]'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]',
+                  // Border color animation for first-time users on Models link
+                  showPulse && isModels && 'border-2 border-[var(--color-accent)] animate-pulse',
+                )}
+                style={
+                  showPulse && isModels
+                    ? {
+                        animationDuration: '2s',
+                      }
+                    : undefined
+                }
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-1">
@@ -82,21 +111,36 @@ export function Header() {
       {open && (
         <div className="md:hidden border-t border-[var(--color-border)] bg-[var(--color-bg)]">
           <nav className="flex flex-col px-4 py-3 gap-1" aria-label="Mobile navigation">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  'px-3 h-11 flex items-center text-sm rounded-[var(--radius-md)] transition-colors',
-                  pathname === link.href
-                    ? 'text-[var(--color-text)] font-medium bg-[var(--color-bg-muted)]'
-                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]',
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const isModels = link.href === '/models';
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => {
+                    setOpen(false);
+                    if (isModels) handleModelsClick();
+                  }}
+                  className={cn(
+                    'px-3 h-11 flex items-center text-sm rounded-[var(--radius-md)] transition-colors relative',
+                    pathname === link.href
+                      ? 'text-[var(--color-text)] font-medium bg-[var(--color-bg-muted)]'
+                      : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-bg-subtle)]',
+                    // Border color animation for first-time users on Models link
+                    showPulse && isModels && 'border-2 border-[var(--color-accent)] animate-pulse',
+                  )}
+                  style={
+                    showPulse && isModels
+                      ? {
+                          animationDuration: '2s',
+                        }
+                      : undefined
+                  }
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
           <Divider />
         </div>

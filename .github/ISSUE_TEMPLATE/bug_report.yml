@@ -1,6 +1,6 @@
 name: 🐛 Bug Report
 description: Something is broken or behaving unexpectedly.
-labels: ["bug"]
+labels: ['bug']
 body:
   - type: markdown
     attributes:
@@ -12,7 +12,7 @@ body:
     attributes:
       label: Page URL
       description: Which page were you on when the bug occurred?
-      placeholder: "e.g. https://ollama-explorer.vercel.app/models/abc-123"
+      placeholder: 'e.g. https://ollama-explorer.vercel.app/models/abc-123'
     validations:
       required: false
 
@@ -21,7 +21,7 @@ body:
     attributes:
       label: What happened?
       description: A clear and concise description of the bug.
-      placeholder: "Describe what went wrong..."
+      placeholder: 'Describe what went wrong...'
     validations:
       required: true
 
@@ -29,7 +29,7 @@ body:
     id: expected
     attributes:
       label: What did you expect?
-      placeholder: "Describe what you expected to happen..."
+      placeholder: 'Describe what you expected to happen...'
     validations:
       required: false
 
@@ -48,6 +48,6 @@ body:
     id: browser
     attributes:
       label: Browser / OS
-      placeholder: "e.g. Chrome 122 on macOS 14"
+      placeholder: 'e.g. Chrome 122 on macOS 14'
     validations:
       required: false

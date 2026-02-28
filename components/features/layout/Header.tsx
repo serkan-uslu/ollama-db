@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/models', label: 'Models' },
   { href: '/about', label: 'About' },
+  { href: '/roadmap', label: 'Roadmap' },
 ];
 
 const MODELS_VISITED_KEY = 'models-visited';

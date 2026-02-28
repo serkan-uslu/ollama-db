@@ -193,6 +193,7 @@ We welcome contributions! Check out [CONTRIBUTING.md](CONTRIBUTING.md) to get st
 
 ## 🗺 Roadmap
 
+- [ ] AI-powered chat interface to help users discover the right model through natural conversation
 - [ ] Model rating & review system
 - [ ] User favorites & collections
 - [ ] Advanced comparison features

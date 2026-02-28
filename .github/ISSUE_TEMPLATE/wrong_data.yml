@@ -1,6 +1,6 @@
 name: 📊 Wrong Model Data
 description: A model's metadata (domain, capabilities, RAM, etc.) is incorrect or outdated.
-labels: ["data"]
+labels: ['data']
 body:
   - type: markdown
     attributes:
@@ -11,7 +11,7 @@ body:
     id: model
     attributes:
       label: Model name
-      placeholder: "e.g. llama3.1"
+      placeholder: 'e.g. llama3.1'
     validations:
       required: true
 
@@ -19,7 +19,7 @@ body:
     id: model_url
     attributes:
       label: Model page URL
-      placeholder: "e.g. https://ollama-explorer.vercel.app/models/abc-123"
+      placeholder: 'e.g. https://ollama-explorer.vercel.app/models/abc-123'
     validations:
       required: false
 
@@ -48,7 +48,7 @@ body:
     id: current
     attributes:
       label: Current (wrong) value
-      placeholder: "What does the site currently show?"
+      placeholder: 'What does the site currently show?'
     validations:
       required: true
 
@@ -56,7 +56,7 @@ body:
     id: correct
     attributes:
       label: Correct value
-      placeholder: "What should it show instead?"
+      placeholder: 'What should it show instead?'
     validations:
       required: true
 
@@ -65,6 +65,6 @@ body:
     attributes:
       label: Source
       description: Link to the official Ollama page or documentation that confirms the correct value.
-      placeholder: "https://ollama.com/library/..."
+      placeholder: 'https://ollama.com/library/...'
     validations:
       required: false

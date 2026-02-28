@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/atoms/Button';
+import { OlliVideo } from '@/components/features/home/OlliVideo';
 
 export const metadata = {
   title: 'Page Not Found',
@@ -10,9 +11,11 @@ export default function NotFound() {
   return (
     <main
       id="main"
-      className="flex-1 flex flex-col items-center justify-center px-4 py-24 text-center"
+      className="flex-1 flex flex-col items-center justify-center px-4 py-12 text-center"
     >
-      <p className="text-7xl font-bold text-[var(--color-text-subtle)] mb-4 select-none">⬡</p>
+      <div className="mb-8">
+        <OlliVideo />
+      </div>
       <h1 className="text-2xl font-semibold text-[var(--color-text)] mb-2">Page not found</h1>
       <p className="text-sm text-[var(--color-text-muted)] max-w-xs mb-8">
         The page you&rsquo;re looking for doesn&rsquo;t exist or the model may have been removed.

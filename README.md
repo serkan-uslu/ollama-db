@@ -1,26 +1,39 @@
 # Ollama Explorer
 
-[![GitHub Stars](https://img.shields.io/github/stars/serkan-uslu/ollama-explorer?style=social)](https://github.com/serkan-uslu/ollama-explorer/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/serkan-uslu/ollama-explorer?style=social)](https://github.com/serkan-uslu/ollama-explorer/network/members)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ollama-explorer.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
+<table>
+<tr>
+<td width="240">
+  <img src="public/olli.jpg" alt="Olli — Ollama Explorer mascot" width="220" style="border-radius: 16px;" />
+</td>
+<td>
+
+### The fast, filterable directory for every Ollama model
 
 > **Ollama has 200+ open-source AI models. Finding the right one is painful.**
 >
-> The official library shows a wall of model cards with almost no filtering. To pick the right model you end up opening dozens of tabs, reading raw descriptions, and guessing whether your machine can even run it.
+> The official library shows a wall of model cards with almost no filtering. You open dozens of tabs, read raw descriptions, and still can't tell if your machine can even run it.
 >
-> **Ollama Explorer fixes this.** It's a fast, searchable directory where every model is enriched with structured metadata: RAM requirements, context window size, speed tier, parameter sizes, domain, capabilities, supported languages, strengths, limitations, and benchmark scores. Filter across all dimensions at once, compare models side by side, and get to the right model in seconds — not hours.
+> **Ollama Explorer fixes this.** Browse, filter, and compare 214+ models — enriched with RAM requirements, context window size, speed tier, domain, capabilities, and benchmark scores — all in one place.
 
-🌐 **Live** → [ollama-explorer.vercel.app](https://ollama-explorer.vercel.app)  
+🌐 **Live** → [ollama-explorer.vercel.app](https://ollama-explorer.vercel.app)
 📦 **Source** → [github.com/serkan-uslu/ollama-explorer](https://github.com/serkan-uslu/ollama-explorer)
+
+</td>
+</tr>
+</table>
+
+[![GitHub Stars](https://img.shields.io/github/stars/serkan-uslu/ollama-explorer?style=social)](https://github.com/serkan-uslu/ollama-explorer/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/serkan-uslu/ollama-explorer?style=social)](https://github.com/serkan-uslu/ollama-explorer/network/members)
+[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://ollama-explorer.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
 ## ⚙️ Part of a Two-Repo Ecosystem
 
-Ollama Explorer is **Part 2 of 2**. The structured metadata that powers every filter, every RAM badge, and every benchmark score doesn't come from a hand-curated spreadsheet — it's generated automatically every week by the companion data pipeline:
+Ollama Explorer is **Part 2 of 2**. The structured metadata that powers every filter, badge, and benchmark score is generated automatically every week by the companion data pipeline:
 
 |                      | Repo                                                                | Role                                                                                                                            |
 | :------------------: | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -31,44 +44,13 @@ Ollama Explorer is **Part 2 of 2**. The structured metadata that powers every fi
   ollama.com/library
         ▼  (crawled every Monday 03:00 UTC)
 ┌─────────────────────┐      PR: models.json      ┌──────────────────────────┐
-│     Ollama Miner       │ ────────────────────────▶ │    Ollama Explorer      │
+│     Ollama Miner    │ ────────────────────────▶  │    Ollama Explorer       │
 │  crawl → enrich     │   public/data/models.json  │  🔍 filter · compare ·  │
-│  validate → export  │                            │  search (you are here) │
+│  validate → export  │                            │  search (you are here)  │
 └─────────────────────┘                            └──────────────────────────┘
 ```
 
 🔗 Want to improve the data or run the pipeline yourself? → [**Ollama Miner**](https://github.com/serkan-uslu/ollama-db-pipeline)
-
----
-
-<table>
-<tr>
-<td width="240">
-  <img src="public/olli.jpg" alt="Olli — Ollama Explorer mascot" width="220" style="border-radius: 16px;" />
-</td>
-<td>
-
-### 🤖 Find the Perfect AI Model in Seconds
-
-Browse, filter and compare **214+ open-source AI models** from [Ollama](https://ollama.com) with advanced search, multi-dimensional filtering, and side-by-side comparison.
-
-**⚡ Built for speed:**
-
-- Next.js 16 (App Router) + React 19
-- Fully statically generated — zero JS on load
-- Atomic Design architecture
-
-**🎯 Key features:**
-
-- Filter by RAM, domain, language, use-case
-- Compare up to 4 models side-by-side
-- One-click copy `ollama run` commands
-
-🌐 **[ollama-explorer.vercel.app](https://ollama-explorer.vercel.app)**
-
-</td>
-</tr>
-</table>
 
 ---
 
@@ -188,7 +170,7 @@ All colours, radii, shadows and typography are defined as CSS custom properties 
 
 ## Data
 
-214+ models scraped from [ollama.com/library](https://ollama.com/library) by the **[ollama-db-pipeline](https://github.com/serkan-uslu/ollama-db-pipeline)** — an automated Python pipeline that runs every week and opens a PR with a fresh `models.json`.
+214+ models scraped from [ollama.com/library](https://ollama.com/library) by the **[Ollama Miner](https://github.com/serkan-uslu/ollama-db-pipeline)** — an automated Python pipeline that runs every week and opens a PR with a fresh `models.json`.
 
 Each model is enriched with:
 
@@ -242,14 +224,6 @@ We welcome contributions! Check out [CONTRIBUTING.md](CONTRIBUTING.md) to get st
 
 ---
 
-## 🙏 Acknowledgments
-
-- [Ollama](https://ollama.com) for the amazing AI model platform
-- All model creators and maintainers in the open-source AI community
-- Next.js team for the incredible framework
-
----
-
 ## ⭐ Star History
 
 If you find this project useful, please consider giving it a star! ⭐
@@ -260,10 +234,4 @@ If you find this project useful, please consider giving it a star! ⭐
 
 ## 📄 License
 
-MIT &copy; [Serkan Uslu](https://github.com/serkan-uslu)
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT © [Serkan Uslu](https://github.com/serkan-uslu)
